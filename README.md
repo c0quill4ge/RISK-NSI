@@ -1,5 +1,6 @@
 # RISK-NSI
 **Règles du jeu**
+
 **Phase de placement:**
 * les objectifs sont distribués aux joueurs (facultatif si on fixe un objectif plus simple comme conquérir 60% du plateau ...)
 * les terrains sont attribués aléatoirement aux joueurs, avec un pion sur chaque case
