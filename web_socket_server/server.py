@@ -30,7 +30,8 @@ def connection(websocket, message):
         return False
     if len(json_dict["token"]) != 256:  # faudra ptet modifier après en fonction de la vraie valeur attendue
         return False
-    
+    return bdd.find_token(json_dict["token"]) #True si le token existe et le compte aussi, False sinon
+
 
 
 async def action(websocket, message):
