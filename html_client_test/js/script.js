@@ -5,6 +5,7 @@ const testButton = document.querySelector("#test_message_button");
 // Connection opened
 socket.addEventListener('open', function (event) {
     console.log('Connected to the WS Server!')
+    socket.send('TOKEN TEST');
 });
 
 // Connection closed
