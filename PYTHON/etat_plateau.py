@@ -1,3 +1,14 @@
+import mariadb
+import random
+conn = mariadb.connect(
+    user="root",
+    password="",
+    host= "localhost",
+    port=3307,
+    database="risk"
+)
+
+
 def attaquer(id_partie, case_depart, case_arrivée, nb_troupes):
 	#fonction lancer_de et l’analyse et trouve le vainqueur
 	#recommence jusqu’à épuisement d’une des troupes et renvoie le vainqueur de l’attaque
@@ -33,3 +44,15 @@ def placement_troupes(id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
 	#sinon place nb_troupes troupes sur la case voulue
     pass
+
+def enregistre_bdd(D):
+    # D est un dictionnaire de dictionnaires
+    # D = {nomdelatable (de la bdd) : {nomduchamp : valeurdenomduchamp}
+    pass
+
+def recupere_bdd(id_partie):
+    # renvoyer un dictionnaire de dictionnaires R
+    # R = {nomdelatable : {nomduchamp : valeurdenomduchamp}
+    curseur = conn.cursor()
+    curseur.execute("SELECT id_joueur_suivant FROM joueurs_partie WHERE id_partie = ? ;", (idpartie,))
+    joueur_suivant = curseur
