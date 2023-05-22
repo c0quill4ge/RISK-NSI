@@ -6,10 +6,9 @@ import json
 
 from websockets.server import serve
 
+from web_socket_server.database.database import Database
 
-async def echo(websocket):
-    async for message in websocket:
-        await websocket.send(message)
+bdd = Database()
 
 
 async def gestion(websocket):
@@ -23,7 +22,10 @@ async def gestion(websocket):
 
 
 def connection(websocket, message):
+    global bdd
+
     json_dict = json.loads(message)
+
     if len(json_dict) != 1:
         return False
     if len(json_dict["token"]) != 256:  # faudra ptet modifier après en fonction de la vraie valeur attendue
