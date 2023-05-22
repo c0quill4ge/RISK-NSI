@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import asyncio
+import json
+
 
 from websockets.server import serve
 
@@ -21,10 +23,12 @@ async def gestion(websocket):
 
 
 def connection(websocket, message):
-    print("Message reçu :", message)  # je fais des tests ici
-    print("user connecté")
-
-    # print(str(websocket.remote_address) + " s'est connecté")
+    json_dict = json.loads(message)
+    if len(json_dict) != 1:
+        return False
+    if len(json_dict["token"]) != 256:  # faudra ptet modifier après en fonction de la vraie valeur attendue
+        return False
+    
 
 
 async def action(websocket, message):
