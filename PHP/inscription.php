@@ -24,12 +24,9 @@ $username = null;
 
   	<div class="input-group">
   	  <label>Pseudonyme:</label>
-  	  <input type="text" name="username" value="<?php echo $username; ?>">
+  	  <input type="text" name="username" value="name">
   	</div>
-	<div >
-  	  <label>Age:</label>
-  	  <input type="int" name="age" value="<?php echo $age; ?>">
-  	</div>
+	
   	<div >
   	  <label>MDP:</label>
   	  <input type="password" name="password_1">
