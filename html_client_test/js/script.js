@@ -21,3 +21,4 @@ socket.addEventListener('message', function (event) {
 testButton.addEventListener("click", () => {
     socket.send('Hello from Client2!');
 });
+
