@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `aretes` (
   `id_case2` int NOT NULL,
   KEY `id_case1` (`id_case1`),
   KEY `id_case2` (`id_case2`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `cases`;
 CREATE TABLE IF NOT EXISTS `cases` (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `cases` (
   PRIMARY KEY (`id_case`),
   KEY `id_continent` (`id_continent`),
   KEY `id_plateau` (`id_plateau`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `continents`;
 CREATE TABLE IF NOT EXISTS `continents` (
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `continents` (
   `nb_pions` int NOT NULL,
   PRIMARY KEY (`id_continent`),
   KEY `id_plateau` (`id_plateau`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `etat_partie`;
 CREATE TABLE IF NOT EXISTS `etat_partie` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `etat_partie` (
   KEY `id_cases` (`id_cases`),
   KEY `id_joueur` (`id_joueur`),
   KEY `id_partie` (`id_partie`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `joueurs`;
 CREATE TABLE IF NOT EXISTS `joueurs` (
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `joueurs` (
   `pseudo` int NOT NULL,
   `mdp` varchar(20) NOT NULL,
   PRIMARY KEY (`id_joueur`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `joueurs_parties`;
 CREATE TABLE IF NOT EXISTS `joueurs_parties` (
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `joueurs_parties` (
   KEY `id_partie` (`id_partie`),
   KEY `id_joueur` (`id_joueur`),
   KEY `id_joueursuivant` (`id_joueursuivant`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `parties`;
 CREATE TABLE IF NOT EXISTS `parties` (
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `parties` (
   `tour` int NOT NULL,
   PRIMARY KEY (`id_partie`),
   KEY `id_plateau` (`id_plateau`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `plateaux`;
 CREATE TABLE IF NOT EXISTS `plateaux` (
@@ -75,14 +75,14 @@ CREATE TABLE IF NOT EXISTS `plateaux` (
   `nom_plateau` varchar(30) NOT NULL,
   `image` text NOT NULL,
   PRIMARY KEY (`id_plateau`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id_joueur` int NOT NULL,
   `token` int NOT NULL,
   `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `aretes`
   ADD CONSTRAINT `aretes_ibfk_1` FOREIGN KEY (`id_case1`) REFERENCES `cases` (`id_case`),
@@ -108,6 +108,6 @@ ALTER TABLE `joueurs_parties`
 ALTER TABLE `parties`
   ADD CONSTRAINT `parties_ibfk_1` FOREIGN KEY (`id_plateau`) REFERENCES `plateaux` (`id_plateau`);
 
-ALTER TABLE `token`
+ALTER TABLE `tokens`
   ADD CONSTRAINT `token_ibfk_1` FOREIGN KEY (`id_joueur`) REFERENCES `joueurs` (`id_joueur`);
 COMMIT;
