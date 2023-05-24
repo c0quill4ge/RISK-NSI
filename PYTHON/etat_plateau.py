@@ -1,22 +1,41 @@
-import mariadb
+
 import random
-conn = mariadb.connect(
-    user="root",
-    password="",
-    host= "localhost",
-    port=3307,
-    database="risk"
-)
+from database import Database
 
+def attaquer(idpartie, idjoueur, case_dep, case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
+    nb_troupe_ennemie, id_case_cib = database.getCase(idpartie, case_cib)
+    pertes = bataille_des(nb_troupe, nb_troupe_ennemie)
+    new_nb_troupe_att = database.getCase(idpartie, case_dep)[0] - pertes[0]
+    new_nb_troupe_def = database.getCase(idpartie, case_cib)[0] - pertes[1]
+    if new_nb_troupe_att < 1:  # L'attaquant ne possède plus qu'une seule troupe sur son pays
+        new_nb_troupe_att = 1
+    if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
+        database.updateProperty(idpartie, id_case_cib, idjoueur)
+        database.updateArmy(idpartie, case_cib, 1)
+    else:
+        database.updateArmy(idpartie, case_cib, new_nb_troupe_def)
+    database.updateArmy(idpartie, case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
 
-def attaquer(id_partie, case_depart, case_arrivée, nb_troupes):
-	#fonction lancer_de et l’analyse et trouve le vainqueur
-	#recommence jusqu’à épuisement d’une des troupes et renvoie le vainqueur de l’attaque
-    pass
+def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque côtés
+    if pions_att >= 3:
+        att = [random.randint(1, 6) for _ in range(3)]
+    else:
+        att = [random.randint(1, 6) for _ in range(pions_att)]
+    if pions_def >= 2:
+        déf = [random.randint(1, 6) for _ in range(2)]
+    else:
+        déf = [random.randint(1, 6)]
 
-def lancer_de(id_partie, joueur):
-	#renvoie le resultat du lancer de 2 dés en random de 1 à 6 (vainqueur / vaincu)
-    pass
+    att.sort(reverse=True)
+    déf.sort(reverse=True)
+    perte_att, perte_déf = 0, 0
+    l = min(len(att), len(déf))
+    for i in range(l):
+        if att[i] > déf[i]:
+            perte_déf += 1
+        else:
+            perte_att += 1
+    return (perte_déf, perte_att)
 
 def deplacer_troupes(id_partie, case_depart, case_arrivée, nb_troupes):
 	#deplacer nb_troupes de case_depart à case_arrivée
