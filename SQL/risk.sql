@@ -8,12 +8,14 @@ CREATE TABLE IF NOT EXISTS `aretes` (
 
 DROP TABLE IF EXISTS `cases`;
 CREATE TABLE IF NOT EXISTS `cases` (
-  `id_case` int NOT NULL AUTO_INCREMENT,
-  `id_plateau` int NOT NULL,
-  `id_continent` int NOT NULL,
-  `x` int NOT NULL,
-  `y` int NOT NULL,
+  `id_case` int(11) NOT NULL AUTO_INCREMENT,
+  `id_plateau` int(11) NOT NULL,
+  `id_continent` int(11) NOT NULL,
+  `nom_pays` text NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
   `svg` text NOT NULL,
+  `nb_pions` int(11) DEFAULT 0,
   PRIMARY KEY (`id_case`),
   KEY `id_continent` (`id_continent`),
   KEY `id_plateau` (`id_plateau`)
