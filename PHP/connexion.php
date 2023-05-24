@@ -1,11 +1,4 @@
-<?php 
-include('server.php');
-$username = null;
 
-
-// INSCRIPTION UTILISATEUR
-
-?>
 
 <!DOCTYPE html>
 <html>
