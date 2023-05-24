@@ -1,0 +1,29 @@
+.empty{
+	fill : 'white';
+	opacity : 0;
+}
+
+.j1{
+	fill :'red';
+	opacity : '1';
+}
+.j2{
+	fill :'green';
+	opacity : '1';
+}
+.j3{
+	fill :'blue';
+	opacity : '1';
+}
+.j4{
+	fill : 'yellow';
+	opacity : '1';
+}
+.j5{
+	fill : 'purple';
+	opacity : '1';
+}
+.j6{
+	fill : 'cyan';
+	opacity : '1';
+}

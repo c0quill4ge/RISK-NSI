@@ -3,32 +3,36 @@
 import asyncio
 import json
 
-
 from websockets.server import serve
 
+from web_socket_server.database.database import Database
+from web_socket_server.utils.user import User
 
-async def echo(websocket):
-    async for message in websocket:
-        await websocket.send(message)
+bdd = Database()
 
 
 async def gestion(websocket):
     connecte = False
     async for message in websocket:
         if not connecte:
-            connecte = connection(websocket, message)
+            conn = connection(websocket, message)
+            connecte = conn[0]
+            user = User(websocket, conn[1])
         else:
             # on est connecté
             await action(websocket, message)
 
 
 def connection(websocket, message):
+    global bdd
+
     json_dict = json.loads(message)
+
     if len(json_dict) != 1:
         return False
-    if len(json_dict["token"]) != 256:  # faudra ptet modifier après en fonction de la vraie valeur attendue
+    if len(json_dict["token"]) != 256:  # à modifier en fonction du token généré par le php
         return False
-    
+    return bdd.find_token(json_dict["token"])  # (True, id_joueur) si le token existe et le compte aussi, (False, None) sinon
 
 
 async def action(websocket, message):
