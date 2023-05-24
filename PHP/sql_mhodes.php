@@ -3,7 +3,7 @@
 function sql_connect() {
     // fonction permettant de se connecter à la BDD
     // Les lignes suivantes sont à modifier selon les besoins !
-    $dbname = 'puissance3';
+    $dbname = 'risk';
     $identifiant = 'root'; //cet utilisateur n'a qu'un seul droit : lecture sur base BLOC4
     $motdepasse = '';
     $port = 3307;   
