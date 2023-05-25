@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `etat_partie` (
 DROP TABLE IF EXISTS `joueurs`;
 CREATE TABLE IF NOT EXISTS `joueurs` (
   `id_joueur` int NOT NULL AUTO_INCREMENT,
-  `pseudo` int NOT NULL,
+  `pseudo` varchar(13) NOT NULL,
   `mdp` varchar(20) NOT NULL,
   PRIMARY KEY (`id_joueur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id_joueur` int NOT NULL,
   `token` int NOT NULL,
-  `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `time` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `aretes`
