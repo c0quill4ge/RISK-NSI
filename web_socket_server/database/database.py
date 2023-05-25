@@ -30,7 +30,7 @@ class Database:
         return False, None
 
     def updateArmy(self, idpartie, coord, nb_troupe):  # Met à jour le nombre de troupe sur une case
-        idcase = getCase(idpartie, coord)[2]
+        idcase = self.getCase(idpartie, coord)[2]
         query = "UPDATE etat_partie SET nb_pions VALUES ? WHERE id_partie = ? AND id_case = ? ;"
         self.cursor.execute(query, (nb_troupe, idpartie, idcase))
 
