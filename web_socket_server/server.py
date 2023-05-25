@@ -28,6 +28,7 @@ class WebServer:
                 conn = self.connection(websocket, message)
                 connecte = conn[0]
                 user = User(websocket, conn[1])
+
                 self.register_user(user)
                 await self.action(user)
 
