@@ -49,16 +49,18 @@ def tour(id_partie):
 	#renvoie le numéro du joueur qui doit jouer
     pass
 
-def donner_troupes(id_partie, joueur):
-    def donner_troupes(D,id_partie, joueur): # D => base de donnée sous forme de dictionnaire
-        nb_territoires = 0
-        for partie in D["etat_partie"]:
-            if partie["id_partie"] == id_partie and joueur == partie["id_joueur"]:
-                nb_territoires = len(partie["id_cases"])
 
-                nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
-                partie["nb_pions"] += nb_troupes_a_ajouter
-                break
+def donner_troupes(D,id_partie, joueur): # D => base de donnée sous forme de dictionnaire
+	nb_territoires = 0
+	for partie in D["etat_partie"]:
+	    if partie["id_partie"] == id_partie and joueur == partie["id_joueur"]:
+		nb_territoires = len(partie["id_cases"])
+
+		nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
+		partie["nb_pions"] += nb_troupes_a_ajouter
+		break
+	enregistre_bdd(D)
+	
 
 def debut_partie(id_partie):
 	#donne n troupes à tous les joueurs
