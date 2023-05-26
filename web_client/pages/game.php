@@ -1,6 +1,7 @@
 <?php
-$createNewGame = isset($_GET["create_new_game"]) ? $_GET["create_new_game"] : false;
-
+session_start();
+$playerId = $_SESSION["login"];
+$createNewGame = $_GET["create_new_game"]=="true";
 ?>
 <!doctype html>
 <html lang="fr">
@@ -13,6 +14,30 @@ $createNewGame = isset($_GET["create_new_game"]) ? $_GET["create_new_game"] : fa
     <link rel="shortcut icon" href="../content/images/RISK-32.png" type="image/x-icon">
 </head>
 <body>
+<?php
+function random_str_generator($len_of_gen_str) {
+    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#@*%$";
+    $var_size = strlen($chars);
+    $random_str = '';
 
+    for ($x = 0; $x < $len_of_gen_str; $x++) {
+        $random_str .= $chars[rand(0, $var_size - 1)];
+    }
+
+    return $random_str;
+}
+
+$token = random_str_generator(256);
+
+include_once "../PHP/database.php";
+$database = new Database();
+
+$database->registerToken($token, $playerId);
+
+$c = "<script>const token = '{$token}';</script>";
+
+echo $c;
+?>
+<script src="../script/script.js"></script>
 </body>
 </html>

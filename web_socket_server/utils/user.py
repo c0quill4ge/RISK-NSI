@@ -26,10 +26,7 @@ class User:
         return self.__username
 
     async def send_message(self, message: str):
-        dict = {"message": message}
-
-        await self.__websocket.send(json.dumps(dict))
+        await self.__websocket.send(json.dumps({"message": message}))
 
     def send_action(self, action: Action, data: dict):
-        dict = {"action": action, "data": data}
-        self.__websocket.send(json.dumps(dict))
+        self.__websocket.send(json.dumps({"action": action, "data": data}))

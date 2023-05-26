@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    background-color: #cc0101;
+    color: white;
+    padding: 1em 2em;
+    border-radius: 0.4em;
+}
+
+a:hover {
+    background-color: #d31a1a;
+}
+
+a:active {
+    background-color: #b30000;
+}
+
+h1 {
+    margin: 1em;
+}
+
+#main__home,
+#main__about,
+#main__rules,
+#main__play,
+#main__login {
+    min-height: 100vh;
+    max-width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#main__rules {
+    align-items: start;
+}
+
+#main__rules > h1 {
+    align-self: center;
+}
+
+#main__rules ul {
+    margin-left: 2em;
+}
+
+#main__rules li {
+    margin-left: 2em;
+}
+
+#main__rules p {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    min-height: 4em;
+    background-color: #efefef;
+}
+
+#header__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#header__logo > img {
+    width: 2em;
+    height: auto;
+    margin: 0 1em;
+}
+
+#header__menu > ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    list-style-type: none;
+}
+
+#header__menu > ul > li {
+    margin: 0 1em;
+}
+
+#main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#main__home {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+}
+
+#main__home__game > img {
+    width: 40vw;
+    height: auto;
+}
+

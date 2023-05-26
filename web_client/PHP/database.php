@@ -68,6 +68,22 @@ class Database {
         $stmt->execute($conditions);
         return $stmt->fetchAll();
     }
+
+    public function registerToken($token, $id) {
+        $query = "INSERT INTO tokens (id_joueur, token, time) VALUES (:id, :token, UNIX_TIMESTAMP());";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':token', $token);
+
+        try {
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+
 }
 
 $database = new Database();

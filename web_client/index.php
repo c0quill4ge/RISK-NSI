@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Risk en ligne</title>
     <link rel="shortcut icon" href="./content/images/RISK-32.png" type="image/x-icon">
-    <link rel="stylesheet" href="style/game.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
 
@@ -15,11 +15,11 @@
     </div>
     <div id="header__menu">
         <ul>
-            <li><a href="#">Accueil</a></li>
-            <li><a href="#">Règles</a></li>
-            <li><a href="#">Jouer</a></li>
-            <li><a href="#">À propos</a></li>
-            <li><a href="#">Se connecter</a></li>
+            <li><a href="#main__home">Accueil</a></li>
+            <li><a href="#main__rules">Règles</a></li>
+            <li><a href="#main__play">Jouer</a></li>
+            <li><a href="#main__about">À propos</a></li>
+            <li><a href="#main__login">Se connecter</a></li>
         </ul>
     </div>
 </header>
@@ -30,13 +30,45 @@
             <img src="./content/svg/Risk_board.svg" alt="risk board">
         </div>
         <div id="main__home_description">
-            <h2>Découvrez risk en ligne</h2>
+            <h1>Découvrez risk en ligne</h1>
             <p>C'est comme le jeu de société sauf que c'est en ligne ! Vous jouez même contre des vraies personnes !</p>
         </div>
     </div>
 
     <div id="main__rules">
-        <!--règles...-->
+        <h1>RISK-NSI</h1>
+        <p>Règles du jeu</p>
+
+        <p>Phase de placement:</p>
+        <ul>
+            <li>les objectifs sont distribués aux joueurs (facultatif si on fixe un objectif plus simple comme conquérir 60% du plateau ...)</li>
+            <li>les terrains sont attribués aléatoirement aux joueurs, avec un pion sur chaque case</li>
+            <li>les joueurs disposent alors chacun son tour, un par un, les pions restants</li>
+        </ul>
+
+        <p>Phase de jeu</p>
+        <ul>
+            <li>Dans un tour:</li>
+            <ul>
+                <li>les joueurs reçoivent leurs pions et les placent</li>
+                <li>les joueurs peuvent effectuer une ou plusieurs attaques</li>
+                <li>les joueurs peuvent effectuer des déplacements</li>
+            </ul>
+            <li>Un joueur qui atteint son objectif a gagné.</li>
+        </ul>
+
+        <p>Déroulement d'une attaque</p>
+        <ul>
+            <li>si un joueur le souhaite, il sélectionne une de ses cases, un certain nombre des pions de sa case, et une case voisine qu'il ne contrôle pas</li>
+            <li>un clic sur "attaquer" va lancer une bataille de dés. Selon les résultats, des pions attaquants ou défenseurs vont mourir</li>
+            <li>s'il ne reste plus de pion défenseur, les pions sélectionnés vont occuper la case, qui est alors conquise</li>
+        </ul>
+
+        <p>Déplacements</p>
+        <ul>
+            <li>À la fin du tour, un joueur peut sélectionner des pions d'une case et les envoyer vers une autre case, à condition qu'il existe un chemin les reliant en passant par ses cases</li>
+        </ul>
+
     </div>
 
     <div id="main__play">
@@ -44,17 +76,27 @@
             Créer une partie
         </a>
         <div id="main__play__list">
-            <?php
-            include_once "./PHP/getGames.php";
-            foreach ($gameList as $gameId) {
-            ?>
-                <a href="./pages/game.php?game_id=<?=$gameId?>" id="main_play_join"></a>
-            <?php
-            }
-            ?>
+<!--            --><?php
+//            include_once "./PHP/getGames.php";
+//            foreach ($gameList as $gameId) {
+//            ?>
+<!--                <a href="./pages/game.php?game_id=--><?php //=$gameId?><!--" id="main_play_join"></a>-->
+<!--            --><?php
+//            }
+//            ?>
         </div>
-
     </div>
+
+    <div id="main__about">
+        <h1>À propos</h1>
+        <p>Projet réalisé par la classe de NSI de Terminale du Lycée Henri Poincaré à Nancy en tant que projet de fin d'année.</p>
+    </div>
+    <div id="main__login">
+        <h1>Se connecter</h1>
+        <a href="./pages/connexion.php">Se connecter</a>
+    </div>
+
+
 </main>
 
 </body>

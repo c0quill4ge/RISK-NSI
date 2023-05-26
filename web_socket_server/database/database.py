@@ -61,7 +61,7 @@ class Database:
         if not isinstance(conditions_dict, dict):
             raise TypeError("conditions_dict doit être un dictionnaire")
 
-        query = "SELECT {} FROM {} WHERE {} %s {}"
+        query = "SELECT {} FROM {} WHERE"
         conditions = [nom_champ, table]
 
         for key, value in conditions_dict.items():
@@ -81,7 +81,10 @@ class Database:
                 conditions.append(key)
                 conditions.append(value[1])
             else:
-                query += " AND {} %s {} " % value[0]
+                if len(conditions) == 2:
+                    query += " {} %s {} " % value[0]
+                else:
+                    query += " AND {} %s {} " % value[0]
                 conditions.append(key)
                 conditions.append(value[1])
 
