@@ -41,8 +41,52 @@ def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque
     return (perte_déf, perte_att)
 
 def deplacer_troupes(id_partie, case_depart, case_arrivée, nb_troupes):
-	#deplacer nb_troupes de case_depart à case_arrivée
-    pass
+	
+    db = Database()
+    G = creer_graphe(id_partie) 
+    Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
+
+    def get_joueur(id_case0):
+        for id_case, id_joueur, nb_pions in Partie:
+            if id_case == id_case0:
+                return id_joueur     
+    def get_nb_pions(id_case0):
+        for id_case, id_joueur, nb_pions in Partie:
+            if id_case == id_case0:
+                return id_joueur
+
+    if get_joueur(case_depart) != tour(id_partie):
+        raise NbPionsInsuffisant
+    joueur = tour(id_partie)
+    
+
+    #check que ya assez de nm troupes dans case arrive
+    if get_nb_pions(case_depart) <= nb_troupes:
+        raise CaseNonValide
+
+    #verifier chemin case depart case arrive (condition = meme territoire)
+    test = False 
+    visited = dict()
+    f = File()
+    f.enfiler(case_depart)
+    while not (f.est_vide()):
+        a = f.defiler()
+        if a not in visited and get_joueur(a) == joueur: # on verifie que la case nest pas visite ET elle appartient au joueur dont cest le tour 
+            visited[a]= True
+            if a == case_depart:
+                test = True
+            for v in G.voisins(a):
+                f.enfiler(v)
+
+    if not test:# case impossible a connecter
+        raise CasesNonConnectes
+
+    #update le nombre dans les deux cases, deplacement de nb_troupes de case_depart à case_arrivée
+    
+    db.updateArmy(id_partie, case_depart, get_nb_pions(case_depart)-nb_troupes)
+    db.updateArmy(id_partie, case_arrivée, get_nb_pions(case_arrivée)+nb_troupes)
+
+    return
 
 def changer_tour(id_partie):
 	#une fois que le joueur a joué, on passe au joueur suivant
@@ -50,7 +94,6 @@ def changer_tour(id_partie):
 
 def tour(D,id_partie): # D => bdd
 	#renvoie le numéro du joueur qui doit jouer
-	
     return partie["tour"] if partie["id_partie"] == id_partie for partie in D["partie"]
 
 
