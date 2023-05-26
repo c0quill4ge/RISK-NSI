@@ -120,14 +120,4 @@ def placement_troupes(id_partie, id_case, nb_troupes = 1):
 	#sinon place nb_troupes troupes sur la case voulue
     pass
 
-def enregistre_bdd(D):
-    # D est un dictionnaire de dictionnaires
-    # D = {nomdelatable (de la bdd) : {nomduchamp : valeurdenomduchamp}
-    pass
 
-def recupere_bdd(id_partie):
-    # renvoyer un dictionnaire de dictionnaires R
-    # R = {nomdelatable : {nomduchamp : valeurdenomduchamp}
-    curseur = conn.cursor()
-    curseur.execute("SELECT id_joueur_suivant FROM joueurs_partie WHERE id_partie = ? ;", (idpartie,))
-    joueur_suivant = curseur
