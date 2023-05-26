@@ -2,19 +2,19 @@
 import random
 from database import Database
 
-def attaquer(idpartie, idjoueur, case_dep, case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
-    nb_troupe_ennemie, id_case_cib = database.getCase(idpartie, case_cib)
+def attaquer(database, idpartie, idjoueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
+    nb_troupe_def = database.getCase(idpartie, case_cib)[0]
     pertes = bataille_des(nb_troupe, nb_troupe_ennemie)
-    new_nb_troupe_att = database.getCase(idpartie, case_dep)[0] - pertes[0]
-    new_nb_troupe_def = database.getCase(idpartie, case_cib)[0] - pertes[1]
+    new_nb_troupe_att = nb_troupe - pertes[0]
+    new_nb_troupe_def = nb_troupe_def - pertes[1]
     if new_nb_troupe_att < 1:  # L'attaquant ne possède plus qu'une seule troupe sur son pays
         new_nb_troupe_att = 1
     if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
         database.updateProperty(idpartie, id_case_cib, idjoueur)
-        database.updateArmy(idpartie, case_cib, 1)
+        database.updateArmy(idpartie, id_case_cib, 1)
     else:
-        database.updateArmy(idpartie, case_cib, new_nb_troupe_def)
-    database.updateArmy(idpartie, case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
+        database.updateArmy(idpartie, id_case_cib, new_nb_troupe_def)
+    database.updateArmy(idpartie, id_case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
 
 def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque côtés
     if pions_att >= 3:
