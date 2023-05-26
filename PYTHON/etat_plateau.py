@@ -1,5 +1,6 @@
 
 import random
+from web_socket_server/database/database.py import Database
 
 def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
