@@ -38,12 +38,12 @@ class Database:
         self.cursor.execute(query, (idpartie,))
         return self.cursor.fetchall()  # Renvoie liste de tuples [(id_partie, id_case, id_joueur, nb_pions)], avec un tuple par case
 
-    def getCase(self, idpartie, coord):  # coord est un tuple (x,y)
-        query = "SELECT nb_pions, id_joueurs, id_case FROM etat_partie JOIN case ON etat_partie.id_case = case.id_case WHERE id_partie = ? AND x = ? AND y = ?"
-        self.cursor.execute(query, (idpartie, coord[0], coord[1]))
+    def getCase(self, idpartie, idcase):  # coord est un tuple (x,y)
+        query = "SELECT nb_pions, id_joueurs FROM etat_partie JOIN case ON etat_partie.id_case = case.id_case WHERE id_partie = ? AND case.id_case = idcase"
+        self.cursor.execute(query, (idpartie, idcase))
         case = self.cursor.fetchall()  # Unr liste contenant un seul tuple
         case = case[0]  # Afin de récupérer le seul tuple de la liste
-        return case  # Renvoie le tuple du nb de pions et l'id du joueur et celui de la case
+        return case  # Renvoie le tuple du nb de pions et l'id du joueur
 
     def recupere_bdd(self, table, nom_champ, conditions_dict=None):
         # conditions_dict se présente comme un dictionnaire dont les clés et les valeurs sont des tuples
