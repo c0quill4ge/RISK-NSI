@@ -1,11 +1,11 @@
 
 import random
-from database import Database
 
-def attaquer(database, idpartie, idjoueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
-    # On s'assure de la légitimité de l'attaque :
-    nb_pions_case_dep, idjoueur = database.getCase(idpartie, id_case_dep)
-    if nb_troupe <= nb_pions_case_dep and :
+def attaquer(database, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
+    nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
+    nb_pions_case_cib, id_joueur_ennemie = database.getCase(idpartie, id_case_cib)
+    # On s'assure qu'il est possible d'attaquer
+    if nb_troupe <= nb_pions_case_dep and id_joueur != id_joueur_ennemie and :  # Pas plus de troupes que possible et attaque la case d'un autre joueur
 	
     	nb_troupe_def = database.getCase(idpartie, id_case_cib)[0]
     	pertes = bataille_des(nb_troupe, nb_troupe_ennemie)
@@ -14,7 +14,7 @@ def attaquer(database, idpartie, idjoueur, id_case_dep, id_case_cib, nb_troupe):
     	if new_nb_troupe_att < 1:  # L'attaquant ne possède plus qu'une seule troupe sur son pays
             new_nb_troupe_att = 1
     	if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
-            database.updateProperty(idpartie, id_case_cib, idjoueur)
+            database.updateProperty(idpartie, id_case_cib, id_joueur)
             database.updateArmy(idpartie, id_case_cib, 1)
     	else:
             database.updateArmy(idpartie, id_case_cib, new_nb_troupe_def)
