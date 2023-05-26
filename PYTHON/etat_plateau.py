@@ -47,9 +47,10 @@ def changer_tour(id_partie):
 	#une fois que le joueur a joué, on passe au joueur suivant
     pass
 
-def tour(id_partie):
+def tour(D,id_partie): # D => bdd
 	#renvoie le numéro du joueur qui doit jouer
-    pass
+	
+    return partie["tour"] if partie["id_partie"] == id_partie for partie in D["partie"]
 
 
 def donner_troupes(D,id_partie, joueur): # D => base de donnée sous forme de dictionnaire
