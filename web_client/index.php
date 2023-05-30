@@ -76,14 +76,21 @@
             Créer une partie
         </a>
         <div id="main__play__list">
-<!--            --><?php
-//            include_once "./PHP/getGames.php";
-//            foreach ($gameList as $gameId) {
-//            ?>
-<!--                <a href="./pages/game.php?game_id=--><?php //=$gameId?><!--" id="main_play_join"></a>-->
-<!--            --><?php
-//            }
-//            ?>
+            <?php
+            include_once "./PHP/getGames.php";
+            global $gameList;
+            if (count($gameList) == 0) { ?>
+                <p>Aucune partie n'est en cours, créez-en une !</p>
+            <?php } else {
+                foreach ($gameList as $gameInfos) { ?>
+                    <div id="main__play__list__game">
+                        <h2><?= $gameInfos["nom_plateau"] ?></h2>
+                        <p><?= $gameInfos["nb_joueurs"] ?> joueurs</p>
+                        <a href="./pages/game.php?game_id=<?= $gameInfos["id_partie"] ?>" id="main_play_join">rejoindre
+                            la partie</a>
+                    </div>
+                <?php }
+            }?>
         </div>
     </div>
 

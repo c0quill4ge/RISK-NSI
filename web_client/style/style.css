@@ -115,3 +115,35 @@ h1 {
     height: auto;
 }
 
+#main__play {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+#main__play__create {
+    width: fit-content;
+    justify-self: center;
+}
+
+#main__play__list {
+    background-color: #efefef;
+    padding: 2em;
+    border-radius: 0.4em;
+}
+
+#main__play__list__game {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    min-width: 50vw;
+    margin: 0.6em;
+    padding: 0.4em;
+    background-color: white;
+    border-radius: 0.4em;
+}
+
+#main__play__list__game > h2 {
+    margin-left: 1em;
+}

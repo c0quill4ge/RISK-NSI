@@ -15,7 +15,8 @@ $createNewGame = $_GET["create_new_game"]=="true";
 </head>
 <body>
 <?php
-function random_str_generator($len_of_gen_str) {
+function random_str_generator($len_of_gen_str): string
+{
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#@*%$";
     $var_size = strlen($chars);
     $random_str = '';

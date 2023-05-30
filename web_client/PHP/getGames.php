@@ -1,4 +1,6 @@
 <?php
 include_once "database.php";
 
-$database = Database();
+$database = new Database();
+
+$gameList = $database->getGames();

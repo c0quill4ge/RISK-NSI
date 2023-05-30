@@ -3,4 +3,4 @@ $host = "localhost";
 $port = "3307";
 $username = "root";
 $password = "";
-$database = "risk";
+$database_name = "risk";

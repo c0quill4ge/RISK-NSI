@@ -3,16 +3,19 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once "database_info.php";
-class Database {
-    private function sql_connect() {
+
+class Database
+{
+    private function sql_connect()
+    {
         global $host;
         global $port;
         global $username;
         global $password;
-        global $database;
+        global $database_name;
 
         try {
-            $sch = "mysql:host=" . $host . ";dbname=" . $database . ";port=" . $port;
+            $sch = "mysql:host={$host};dbname={$database_name};port={$port}";
             $bdd = new PDO($sch, $username, $password);
         } catch (Exception $e) {
             die("Erreur : " . $e->getMessage());
@@ -20,7 +23,8 @@ class Database {
         return $bdd;
     }
 
-    public function getFromDatabaseCustomRequest($table, $nom_champ, $conditions_dict = null): array {
+    public function getFromDatabaseCustomRequest($table, $nom_champ, $conditions_dict = null): array
+    {
         if ($conditions_dict === null) {
             $query = "SELECT $nom_champ FROM $table;";
             $stmt = $this->sql_connect()->query($query);
@@ -62,14 +66,15 @@ class Database {
 
         }
 
-        $query .= sprintf($query, ...$conditions) . ";";
+        $query = sprintf($query, ...$conditions) . ";";
+        print_r($query);
 
-        $stmt = $this->sql_connect()->prepare($query);
-        $stmt->execute($conditions);
-        return $stmt->fetchAll();
+        $stmt = $this->sql_connect()->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function registerToken($token, $id) {
+    public function registerToken($token, $id): bool
+    {
         $query = "INSERT INTO tokens (id_joueur, token, time) VALUES (:id, :token, UNIX_TIMESTAMP());";
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->bindValue(':id', $id);
@@ -83,9 +88,13 @@ class Database {
         }
     }
 
+    public function getGames(): array
+    {
+        $query = "SELECT parties.id_partie, plateaux.nom_plateau, COUNT(joueurs_parties.id_partie) AS nb_joueurs FROM plateaux JOIN parties ON parties.id_plateau = plateaux.id_plateau JOIN joueurs_parties ON parties.id_partie = joueurs_parties.id_partie WHERE parties.etat = 1 GROUP BY parties.id_partie, plateaux.nom_plateau ORDER BY nb_joueurs DESC LIMIT 0, 5;";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 }
-
-$database = new Database();
-$temp = $database->getFromDatabaseCustomRequest("joueurs", "*", array("pseudo" => array("=", "TESTACCOUNT")));
-var_dump($temp);
