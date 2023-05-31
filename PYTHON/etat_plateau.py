@@ -2,6 +2,16 @@
 import random
 from web_socket_server/database/database.py import Database
 
+class NbPionsInsuffisant(Exception):
+    "lorsque le nombre de pions qu'on depalce ou avec lequel on attaque est trop grand"
+    pass
+class CasesNonConnectes(Exception):
+    "lorsque on ne peut pas passer d'une case a l'autre sans passer sur le terriotire d'autrui ou alors ces cases ne sont pas voisines"
+    pass
+class CaseNonValide(Exception):
+    "lorsque la case n'appartient pas au joueur dont cest le tour"
+    pass
+
 def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
     nb_pions_case_cib, id_joueur_ennemie = database.getCase(idpartie, id_case_cib)
@@ -18,6 +28,13 @@ def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb
     	else:
             database.updateArmy(idpartie, id_case_cib, new_nb_troupe_def)
     	database.updateArmy(idpartie, id_case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
+	
+    elif nb_troupe > nb_pions_case_dep:
+	raise NbPionsInsuffisant
+    elif id_joueur == id_joueur_ennemie:
+	raise CaseNonValide
+    elif not graphe.verifier_voisins(id_case_dep, id_case_cib):
+	raise CasesNonConnectes
 
 def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque côtés
     if pions_att >= 3:
@@ -40,10 +57,10 @@ def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque
             perte_att += 1
     return (perte_déf, perte_att)
 
-def deplacer_troupes(id_partie, case_depart, case_arrivée, nb_troupes):
-	
-    db = Database()
-    G = creer_graphe(id_partie) 
+
+
+def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
+
     Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 
     def get_joueur(id_case0):
@@ -56,15 +73,16 @@ def deplacer_troupes(id_partie, case_depart, case_arrivée, nb_troupes):
                 return id_joueur
 
     if get_joueur(case_depart) != tour(id_partie):
-        raise NbPionsInsuffisant
+        raise CaseNonValide
     joueur = tour(id_partie)
     
 
     #check que ya assez de nm troupes dans case arrive
     if get_nb_pions(case_depart) <= nb_troupes:
-        raise CaseNonValide
+        raise NbPionsInsuffisant
 
     #verifier chemin case depart case arrive (condition = meme territoire)
+    #parcours en largeur du graphe
     test = False 
     visited = dict()
     f = File()
