@@ -3,9 +3,31 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    transition: 0.1s;
+    scroll-behavior: smooth;
 }
 
-a {
+input,
+button {
+    font-size: 16px;
+    border: unset;
+    box-shadow: unset;
+    background: unset;
+    border-radius: unset;
+    cursor: pointer;
+}
+
+input[type=text],
+input[type=password] {
+    cursor: text;
+}
+
+input:focus {
+    outline: none;
+}
+
+a,
+button{
     text-decoration: none;
     background-color: #cc0101;
     color: white;
@@ -13,11 +35,13 @@ a {
     border-radius: 0.4em;
 }
 
-a:hover {
+a:hover,
+button:hover {
     background-color: #d31a1a;
 }
 
-a:active {
+a:active,
+button:active {
     background-color: #b30000;
 }
 
@@ -146,4 +170,54 @@ h1 {
 
 #main__play__list__game > h2 {
     margin-left: 1em;
+}
+
+
+
+#connect_form,
+#register_form {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+#connect_form__form,
+#register_form__form {
+    min-width: 40vw;
+    min-height: 40vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#connect_form__form > div > input,
+#register_form__form > div > input {
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.4em;
+    border: 1px solid #ccc;
+    width: 20em;
+}
+
+#connect_form__form > input,
+#register_form__form > input {
+    text-decoration: none;
+    background-color: #cc0101;
+    color: white;
+    padding: 1em 2em;
+    border-radius: 0.4em;
+}
+
+#connect_form__form > input:hover,
+#register_form__form > input:hover {
+    background-color: #d31a1a;
+}
+
+#connect_form__form > input:active,
+#register_form__form > input:active {
+    background-color: #b30000;
 }

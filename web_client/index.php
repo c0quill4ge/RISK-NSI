@@ -1,3 +1,36 @@
+<?php
+session_start();
+require_once "./PHP/database.php";
+$database = new Database();
+
+if (isset($_POST["register_username"]) && isset($_POST["register_password"])) {
+    $create = $database->createUser($_POST["register_username"], $_POST["register_password"]);
+    if (is_string($create)) {
+        $_SESSION["register_error"] = $create;
+        header("Location: /pages/inscription.php");
+        exit;
+    }
+    $_SESSION["user"] = intval($create);
+    header("Location: index.php");
+    exit;
+
+}
+
+if (isset($_POST["login_username"]) && isset($_POST["login_password"])) {
+    $log = $database->login($_POST["login_name"], $_POST["login_password"]);
+    if (is_string($log)) {
+        $_SESSION["login_error"] = $log;
+        header("Location: /pages/connexion.php");
+        exit;
+    }
+    $_SESSION["user"] = intval($log);
+    header("Location: index.php");
+    exit;
+}
+
+$login = $_SESSION["user"] ?? null;
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

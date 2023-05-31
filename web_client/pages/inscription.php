@@ -1,45 +1,44 @@
 <?php
-include('server.php');
-$username = null;
-
-
-// INSCRIPTION UTILISATEUR
-
+session_start();
+if (isset($_SESSION["user"])) unset($_SESSION["user"]);
 ?>
-
-<!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Inscription Risk</title>
-    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <meta charset="UTF-8">
+    <title>Risk en ligne | Inscription</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="icon" href="../content/images/RISK-32.png">
 </head>
 <body>
-<div class="header">
-    <section>
+<header id="header">
+    <div id="header__logo">
+        <img src="../content/images/RISK-32.png" alt="logo">
+        <h2>RISK</h2>
+    </div>
+</header>
+<section id="register_form">
+    <a href="../index.php">Retour</a>
+    <?php if (isset($_SESSION["register_error"])) { ?>
+        <p>
+            <?php
+            echo $_SESSION["register_error"];
+            unset($_SESSION["register_error"]);
+            ?>
+        </p>
+    <?php } ?>
+    <form action="../index.php" method="post" id="register_form__form">
+        <div id="register_form__form__username">
+            <input type="text" name="register_username" placeholder="Choisissez un nom d'utilisateur">
+        </div>
+        <div id="register_form__form__password">
+            <input type="password" name="register_password" placeholder="Choisissez un mot de passe">
+        </div>
+        <input type="submit" value="Inscription" id="register_form__form__submit_button">
+    </form>
+    <div id="register_form__login">
+        <a href="./connexion.php">Déjà inscrit ? Connectez-vous ici.</a>
+    </div>
+</section>
 
-    </section>
-</div>
-
-<form method="post" class="content" action="../PHP/analyse.php?sens=inscription.php">
-
-    <div class="input-group">
-        <label>Pseudonyme:</label>
-        <input type="text" name="pseudo">
-    </div>
-    <div>
-        <label>Age:</label>
-        <input type="int" name="age" ">
-    </div>
-    <div>
-        <label>MDP:</label>
-        <input type="password" name="mdp">
-    </div>
-    <div>
-        <button type="submit">S'inscrire</button>
-    </div>
-    <p>
-        Vous possédez déjà un compte ? <a href="connexion.php">Connexion</a>
-    </p>
-</form>
 </body>
 </html>

@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `joueurs`;
 CREATE TABLE IF NOT EXISTS `joueurs` (
   `id_joueur` int NOT NULL AUTO_INCREMENT,
   `pseudo` varchar(13) NOT NULL,
-  `mdp` varchar(20) NOT NULL,
+  `mdp` TEXT NOT NULL,
   PRIMARY KEY (`id_joueur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

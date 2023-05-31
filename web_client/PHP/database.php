@@ -6,23 +6,6 @@ require_once "database_info.php";
 
 class Database
 {
-    private function sql_connect()
-    {
-        global $host;
-        global $port;
-        global $username;
-        global $password;
-        global $database_name;
-
-        try {
-            $sch = "mysql:host={$host};dbname={$database_name};port={$port}";
-            $bdd = new PDO($sch, $username, $password);
-        } catch (Exception $e) {
-            die("Erreur : " . $e->getMessage());
-        }
-        return $bdd;
-    }
-
     public function getFromDatabaseCustomRequest($table, $nom_champ, $conditions_dict = null): array
     {
         if ($conditions_dict === null) {
@@ -73,6 +56,23 @@ class Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    private function sql_connect()
+    {
+        global $host;
+        global $port;
+        global $username;
+        global $password;
+        global $database_name;
+
+        try {
+            $sch = "mysql:host={$host};dbname={$database_name};port={$port}";
+            $bdd = new PDO($sch, $username, $password);
+        } catch (Exception $e) {
+            die("Erreur : " . $e->getMessage());
+        }
+        return $bdd;
+    }
+
     public function registerToken($token, $id): bool
     {
         $query = "INSERT INTO tokens (id_joueur, token, time) VALUES (:id, :token, UNIX_TIMESTAMP());";
@@ -94,6 +94,37 @@ class Database
         $stmt = $this->sql_connect()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createUser(string $username, string $password): bool|string
+    {
+
+        $hashed_password = hash('sha256', $password);
+        $query = "INSERT INTO joueurs (pseudo, mdp) VALUES (:username, :password);";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindValue(':username', $username);
+        $stmt->bindValue(':password', $hashed_password);
+
+        try {
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function login(string $username, string $password){
+        $hashed_password = hash('sha256', $password);
+        $query = "SELECT id_joueur FROM joueurs WHERE pseudo = :login_name AND mdp = :password;";
+        $stmt = $this->sql_connect()->prepare($query);
+        $stmt->bindValue(':login_name', $username);
+        $stmt->bindValue(':password', $hashed_password);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false){
+            return false;
+        }
+        return $result['id_joueur'];
     }
 
 
