@@ -109,7 +109,18 @@ def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
 
 def changer_tour(id_partie):
 	#une fois que le joueur a joué, on passe au joueur suivant
-    pass
+	joueursuivant = recupere_bdd("joueurs_partie","tour",{"id_partie":id_partie})
+	#mettre a la place de joueur
+	joueurs = recupere_bdd("joueurs_partie","id_joueur",{"id_partie":id_partie}) #order by id_joueur limit 1
+	for joueur in range(len(joueurs)-1):
+		if joueurs[joueur] == joueursuivant:
+			if joueur == len(joueurs)-1:
+				joueurdapres = joueurs[0]
+			else:
+				joueurdapres = joueurs[joueur+1]
+	enregistrer_bdd("joueurs_parties","joueur_suivant",joueurdapres,{"id_partie":id_partie})
+	enregistrer_bdd("parties","tour",joueursuivant,{"id_partie",id_partie})
+    
 
 def tour(D,id_partie): # D => bdd
 	#renvoie le numéro du joueur qui doit jouer
