@@ -145,14 +145,16 @@ def debut_partie(id_partie):
 	#fonction placement_troupes
     pass
 
-def placement_troupes(id_partie, id_case, nb_troupes = 1):
+def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
      
     if state == "debut":
         #on donne une troupe à id_case d'id_partie
-        updateArmy(self, idpartie, coord, nb_troupe)
+        database.updateArmy(idpartie, id_case, 1)
+    else:
+        database.updateArmy(idpartie, id_case, nb_troupes)
 
 	#sinon place nb_troupes troupes sur la case voulue
-    pass
+    return
 
 
