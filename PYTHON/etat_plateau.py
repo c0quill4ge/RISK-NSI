@@ -12,6 +12,7 @@ class CaseNonValide(Exception):
     "lorsque la case n'appartient pas au joueur dont cest le tour"
     pass
 
+db = Database
 def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
     nb_pions_case_cib, id_joueur_ennemie = database.getCase(idpartie, id_case_cib)
@@ -135,6 +136,11 @@ def debut_partie(id_partie):
 
 def placement_troupes(id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
+     
+    if state == "debut":
+        #on donne une troupe à id_case d'id_partie
+        updateArmy(self, idpartie, coord, nb_troupe)
+
 	#sinon place nb_troupes troupes sur la case voulue
     pass
 
