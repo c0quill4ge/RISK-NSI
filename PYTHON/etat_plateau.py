@@ -60,7 +60,7 @@ def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque
 
 
 
-def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
+def deplacer_troupes(db, graphe, id_partie, case_depart, case_arrivée, nb_troupes):
 
     Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 
@@ -94,7 +94,7 @@ def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
             visited[a]= True
             if a == case_depart:
                 test = True
-            for v in G.voisins(a):
+            for v in graphe.voisins(a):
                 f.enfiler(v)
 
     if not test:# case impossible a connecter
