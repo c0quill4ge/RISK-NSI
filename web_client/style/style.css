@@ -221,3 +221,15 @@ h1 {
 #register_form__form > input:active {
     background-color: #b30000;
 }
+
+#main_game {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main_game__board {
+    height: 100vh;
+}

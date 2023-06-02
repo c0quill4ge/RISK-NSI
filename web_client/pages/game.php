@@ -22,7 +22,10 @@ function random_str_generator($len_of_gen_str): string
     return $random_str;
 }
 
-$createNewGame = $_GET["create_new_game"] == "true";
+$createNewGame = isset($_GET["create_new_game"]) && $_GET["create_new_game"] == "true";
+
+include_once "../PHP/database.php";
+$database = new Database();
 ?>
 <!doctype html>
 <html lang="fr">
@@ -33,20 +36,23 @@ $createNewGame = $_GET["create_new_game"] == "true";
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Risk en ligne | Jouer</title>
     <link rel="shortcut icon" href="../content/images/RISK-32.png" type="image/x-icon">
+    <link rel="stylesheet" href="../style/style.css">
 </head>
 <body>
+<main id="main_game">
+    <img src="../content/svg/Risk_board.svg" alt="board svg" id="main_game__board">
+</main>
+
+
+
+
 <?php
 $token = random_str_generator(256);
-
-include_once "../PHP/database.php";
-$database = new Database();
-
 $database->registerToken($token, $playerId);
-
 $c = "<script>const token = '{$token}';</script>";
-
 echo $c;
 ?>
 <script src="../script/script.js"></script>
+<script src="../script/main.js"></script>
 </body>
 </html>

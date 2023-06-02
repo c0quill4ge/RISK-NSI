@@ -113,7 +113,8 @@ class Database
         }
     }
 
-    public function login(string $username, string $password){
+    public function login(string $username, string $password): bool|int
+    {
         $hashed_password = hash('sha256', $password);
         $query = "SELECT id_joueur FROM joueurs WHERE pseudo = :login_name AND mdp = :password;";
         $stmt = $this->sql_connect()->prepare($query);
@@ -121,10 +122,10 @@ class Database
         $stmt->bindValue(':password', $hashed_password);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($result === false){
+        if ($result === false) {
             return false;
         }
-        return $result['id_joueur'];
+        return intval($result['id_joueur']);
     }
 
 

@@ -24,8 +24,9 @@ class Database:
         if result:
             query = "DELETE FROM tokens WHERE token = ?;"
             self.cursor.execute(query, (token,))
+            self.connection.commit()
             if current_timestamp - result[2] < 20: # 20 secondes pour utiliser le token avant sa suppression
-            #if current_timestamp - result[2] < 20000: # modification de test, à supprimer à la mise en prod
+                #if current_timestamp - result[2] < 20000: # modification de test, à supprimer à la mise en prod
                 return True, result[0]
         return False, None
 
@@ -77,7 +78,8 @@ class Database:
                 raise TypeError("La deuxième valeur du tuple doit être une chaîne de caractères ou un entier")
 
             if len(conditions_dict) == 1:
-                query = query % value[0]
+                query += " {} %s {} "
+                query = query % value[0] #ligne 80
                 conditions.append(key)
                 conditions.append(value[1])
             else:

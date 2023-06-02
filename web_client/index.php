@@ -17,7 +17,7 @@ if (isset($_POST["register_username"]) && isset($_POST["register_password"])) {
 }
 
 if (isset($_POST["login_username"]) && isset($_POST["login_password"])) {
-    $log = $database->login($_POST["login_name"], $_POST["login_password"]);
+    $log = $database->login($_POST["login_username"], $_POST["login_password"]);
     if (is_string($log)) {
         $_SESSION["login_error"] = $log;
         header("Location: /pages/connexion.php");
@@ -52,7 +52,10 @@ $login = $_SESSION["user"] ?? null;
             <li><a href="#main__rules">Règles</a></li>
             <li><a href="#main__play">Jouer</a></li>
             <li><a href="#main__about">À propos</a></li>
-            <li><a href="#main__login">Se connecter</a></li>
+            <?php if ($login == null) { ?>
+                <li><a href="#main__login">Se connecter</a></li>
+            <?php } ?>
+            <li><a href="./pages/connexion.php">Se déconnecter</a></li>
         </ul>
     </div>
 </header>
@@ -131,10 +134,13 @@ $login = $_SESSION["user"] ?? null;
         <h1>À propos</h1>
         <p>Projet réalisé par la classe de NSI de Terminale du Lycée Henri Poincaré à Nancy en tant que projet de fin d'année.</p>
     </div>
-    <div id="main__login">
-        <h1>Se connecter</h1>
-        <a href="./pages/connexion.php">Se connecter</a>
-    </div>
+
+    <?php if ($login == null) { ?>
+        <div id="main__login">
+            <h1>Se connecter</h1>
+            <a href="./pages/connexion.php">Se connecter</a>
+        </div>
+    <?php } ?>
 
 
 </main>

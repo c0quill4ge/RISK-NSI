@@ -1,8 +1,5 @@
 const socket = new WebSocket('ws://localhost:8765');
 
-// const token = "csyEOmRdQyAqUQjyVvyeUcVnaPdETujMsAnYIyDdIqJpHYDlOPniaABYugCVTBcmecFQgEXtcrecjJBCqeRdIFbeUPptxmhFsBaaLwADiIXeTCNvfIfClcPjkqhfTpofKsQKPHsTZJNzAMrQWFOKFaBiDPNVavoiLFHWmkPZUMsVXErKAFCDVDRdzaAHPGwIIeLLoRlgrGTiHqkOAuKcMdRQxsxvFSPzFbSJWQlnrWpdqLNmZTdNeLDovougIuib";
-
-
 
 // Connection opened
 socket.addEventListener('open', function (event) {

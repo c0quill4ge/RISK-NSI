@@ -38,7 +38,7 @@ class WebServer:
 
         if len(json_dict) != 1:
             return False
-        if len(json_dict["token"]) != 256:  # à modifier en fonction du token généré par le php
+        if len(json_dict["token"]) != 256:
             return False
         return self.__database.find_token(json_dict["token"])  # (True, id_joueur) si le token existe et le compte aussi, (False, None) sinon
 
