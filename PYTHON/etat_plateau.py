@@ -158,10 +158,22 @@ def donner_troupes(id_partie, joueur):
 	
 
 def debut_partie(id_partie):
-	#donne n troupes à tous les joueurs
-	#donne les territoires aléatoirement à tous les joueurs
-	#fonction placement_troupes
-    pass
+    # donne n troupes à tous les joueurs
+    # donne les territoires aléatoirement à tous les joueurs
+    # fonction placement_troupes
+    territoires = list(recuperer_bdd(cases, id_cases, {'id_partie' : id_partie}))
+    shuffle(territoires)
+    n = len(territoires) / 6
+    terres = [territoires[i:i + n] for i in range(0, len(territoires), n)]
+    L = list(recuperer_bdd("joueurs", "id_joueur", {'id_partie': id_partie}))
+    i = 0
+    for id_player in L:
+        donner_troupes(id_partie, id_player)
+        enregistrer_bdd("etat_partie", "id_cases", terres[i], {'id_joueur' : id_player})
+        i += 1
+
+    assert i == 6, "probleme boucle debut partie"
+
 
 def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
