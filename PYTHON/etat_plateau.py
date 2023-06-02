@@ -189,4 +189,5 @@ def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#sinon place nb_troupes troupes sur la case voulue
     return
 
-
+def change_couleur(id_partie, id_case, id_nouveau_joueur):
+    return {'order':change_couleur,'id_case':id_case, 'id_joueur':id_nouveau_joueur}
