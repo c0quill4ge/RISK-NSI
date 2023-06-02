@@ -12,6 +12,10 @@ class CaseNonValide(Exception):
     "lorsque la case n'appartient pas au joueur dont cest le tour"
     pass
 
+#####################################################################"
+# voir dans attaquer et donner troupes dans plateau.py pour le bonus de continent
+###########
+
 # on crée le graphe
 graphelist = renvoie_table_aretes() # renvoie  [(p1, p2), (p2, p4), ... ]
 graphe = Graphe()
@@ -36,6 +40,10 @@ def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb
             new_nb_troupe_att = 1
     	if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
             database.updateProperty(idpartie, id_case_cib, id_joueur)
+	
+	    #verifier si le joueur possede un continent en entier: envoyer le message qu'il a obtenu tout un continent donc qu'il possede un bonus
+	   
+	
             database.updateArmy(idpartie, id_case_cib, 1)
     	else:
             database.updateArmy(idpartie, id_case_cib, new_nb_troupe_def)
@@ -139,6 +147,8 @@ def tour(id_partie):
     
 
 def donner_troupes(id_partie, joueur):
+	
+	# si bonus de continent -> donner plus de troupes
 	nb_territoires = 0
 	nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":id_partie,"id_joueur":id_joueur}))
 
