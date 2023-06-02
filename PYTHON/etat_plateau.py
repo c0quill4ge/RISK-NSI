@@ -12,30 +12,51 @@ class CaseNonValide(Exception):
     "lorsque la case n'appartient pas au joueur dont cest le tour"
     pass
 
+#####################################################################"
+# voir dans attaquer et donner troupes dans plateau.py pour le bonus de continent
+###########
+
+# on crée le graphe
+graphelist = renvoie_table_aretes() # renvoie  [(p1, p2), (p2, p4), ... ]
+graphe = Graphe()
+for a,b in graphlist:
+	if a not in graphe:
+		graphe.ajouter_sommet(a)
+	if b not in graphe:
+		graphe.ajouter_sommet(b)
+	graphe.ajouter_arete(a,b)
+#graphe crée 
+
 db = Database
-def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
+def attaquer(database, graphe, idpartie, id_attaquant, id_case_dep, id_case_cib,
+             nb_troupe, nb_troupes_envoyées):  # Possible que si le nb de troupe est strictement supérieur à 1
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
     nb_pions_case_cib, id_joueur_ennemie = database.getCase(idpartie, id_case_cib)
     # On s'assure que le nb de troupes n'est pas abusé, que l'on attaque un autre joueur et que le chemin entre les 2 cases existent
-    if nb_troupe <= nb_pions_case_dep and id_joueur != id_joueur_ennemie and graphe.verifier_voisins(id_case_dep, id_case_cib): 
-    	pertes = bataille_des(nb_troupe, nb_pions_case_cib)
-    	new_nb_troupe_att = nb_troupe - pertes[0]
-    	new_nb_troupe_def = nb_troupe_def - pertes[1]
-    	if new_nb_troupe_att < 1:  # L'attaquant ne peux pas avoir moins d'une troupe sur son pays
+    if nb_troupe <= nb_pions_case_dep and id_joueur != id_joueur_ennemie and graphe.verifier_voisins(id_case_dep,
+                                                                                                     id_case_cib):
+        pertes = bataille_des(nb_troupe, nb_pions_case_cib)
+        new_nb_troupe_att = nb_troupe - pertes[0]
+        new_nb_troupe_def = nb_troupe_def - pertes[1]
+        if new_nb_troupe_att < 1:  # L'attaquant ne peux pas avoir moins d'une troupe sur son pays
             new_nb_troupe_att = 1
-    	if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
+        if new_nb_troupe_def < 1:  # Le défenseur a perdu son pays
             database.updateProperty(idpartie, id_case_cib, id_joueur)
+            change_couleur(idpartie, id_case_cib, id_attaquant)
+            deplacer_troupes(idpartie,id_case_dep,id_case_cib,nb_troupes_envoyées)
+            # verifier si le joueur possede un continent en entier: envoyer le message qu'il a obtenu tout un continent donc qu'il possede un bonus
+
             database.updateArmy(idpartie, id_case_cib, 1)
-    	else:
+        else:
             database.updateArmy(idpartie, id_case_cib, new_nb_troupe_def)
-    	database.updateArmy(idpartie, id_case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
-	
+        database.updateArmy(idpartie, id_case_dep, new_nb_troupe_att)  # Met à jour l'armée de l'attaquant
+
     elif nb_troupe > nb_pions_case_dep:
-	raise NbPionsInsuffisant
+        raise NbPionsInsuffisant
     elif id_joueur == id_joueur_ennemie:
-	raise CaseNonValide
+        raise CaseNonValide
     elif not graphe.verifier_voisins(id_case_dep, id_case_cib):
-	raise CasesNonConnectes
+        raise CasesNonConnectes
 
 def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque côtés
     if pions_att >= 3:
@@ -60,7 +81,7 @@ def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque
 
 
 
-def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
+def deplacer_troupes(db, graphe, id_partie, case_depart, case_arrivée, nb_troupes):
 
     Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 
@@ -94,7 +115,7 @@ def deplacer_troupes(db, G, id_partie, case_depart, case_arrivée, nb_troupes):
             visited[a]= True
             if a == case_depart:
                 test = True
-            for v in G.voisins(a):
+            for v in graphe.voisins(a):
                 f.enfiler(v)
 
     if not test:# case impossible a connecter
@@ -122,32 +143,43 @@ def changer_tour(id_partie):
 	enregistrer_bdd("parties","tour",joueursuivant,{"id_partie",id_partie})
     
 
-def tour(D,id_partie): # D => bdd
+def tour(id_partie):
 	#renvoie le numéro du joueur qui doit jouer
-    return partie["tour"] if partie["id_partie"] == id_partie for partie in D["partie"]
+	return recupere_bdd("partie","tour",{"id_partie":id_partie})
+    
 
-
-def donner_troupes(D,id_partie, joueur): # D => base de donnée sous forme de dictionnaire
+def donner_troupes(id_partie, joueur):
+	
+	# si bonus de continent -> donner plus de troupes
 	nb_territoires = 0
-	for partie in D["etat_partie"]:
-	    if partie["id_partie"] == id_partie and joueur == partie["id_joueur"]:
-		nb_territoires = len(partie["id_cases"])
+	nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":id_partie,"id_joueur":id_joueur}))
 
-		nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
-		partie["nb_pions"] += nb_troupes_a_ajouter
-		break
-	enregistre_bdd(D)
+	nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
+	partie["nb_pions"] += nb_troupes_a_ajouter
+	
 	
 
 def debut_partie(id_partie):
-	#donne n troupes à tous les joueurs
-	#donne les territoires aléatoirement à tous les joueurs
-	#fonction placement_troupes
-    pass
+    # donne n troupes à tous les joueurs
+    # donne les territoires aléatoirement à tous les joueurs
+    # fonction placement_troupes
+    territoires = list(recuperer_bdd(cases, id_cases, {'id_partie' : id_partie}))
+    shuffle(territoires)
+    n = len(territoires) / 6
+    terres = [territoires[i:i + n] for i in range(0, len(territoires), n)]
+    L = list(recuperer_bdd("joueurs", "id_joueur", {'id_partie': id_partie}))
+    i = 0
+    for id_player in L:
+        donner_troupes(id_partie, id_player)
+        enregistrer_bdd("etat_partie", "id_cases", terres[i], {'id_joueur' : id_player})
+        i += 1
+
+    assert i == 6, "probleme boucle debut partie"
+
 
 def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
-     
+    state = recupere_bdd("parties","etat",{"id_partie":id_partie})
     if state == "debut":
         #on donne une troupe à id_case d'id_partie
         database.updateArmy(idpartie, id_case, 1)
