@@ -93,7 +93,7 @@ class Database:
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    def enregistrer_bdd(self, table,champ,dictionnaire,chaine):
+    def enregistrer_bdd(self, table,champ,chaine,dictionnaire=dict():
         condition = ""
         args = dictionnaire.keys()
         for argument in len(args-1):
@@ -101,9 +101,13 @@ class Database:
             if argument < len(args)-1:
                 condition += " AND "
             
-        self.cursor.execute("UPDATE ? set ? = ? WHERE ? ;", (table,champ,chaine,condition))
+        self.cursor.execute("UPDATE ? SET ? = ? WHERE ? ;", (table,champ,chaine,condition))
         self.connection.commit()
-
+                        
+    def insert_bdd(self,table,dictionnaire):
+        self.cursor.execute("INSERT INTO ? ? VALUES ? ;", (table,tuple(dictionnaire.keys()),valeurs = tuple(dictionnaire.values()))
+        self.connection.commit()
+                        
     def updateProperty(self, idpartie, idcase, id_new_owner):  # Lorsqu'un joueur prend un pays
         query = "UPDATE id_joueur FROM etat_partie VALUES ? WHERE id_case = ? AND id_partie = ?;"
         self.cursor.execute(query, (id_new_owner, idcase, idpartie))
