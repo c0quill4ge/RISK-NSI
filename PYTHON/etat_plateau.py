@@ -177,7 +177,7 @@ def debut_partie(id_partie):
 
 def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
-     
+    state = recupere_bdd("parties","etat",{"id_partie":id_partie})
     if state == "debut":
         #on donne une troupe à id_case d'id_partie
         database.updateArmy(idpartie, id_case, 1)
