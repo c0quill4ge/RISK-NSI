@@ -13,7 +13,7 @@
     session_start();
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
-    include('..\php\sql_methodes.php');
+    include('..\PHP\sql_methodes.php');
     if (! ISSET($_SESSION["id"])){ 
         header("Location: inscription.php");
         exit();
