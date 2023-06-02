@@ -93,26 +93,16 @@ class Database:
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    def enregistrer_bdd(self, D):  # d => dict, faudra ptet modifier après, y'a ptet des erreurs dans la récupération des données
-        for table in D:
-            self.cursor.execute("SELECT id FROM ? ;", (table,))
-            nb_ids = list(self.cursor)
-            self.connection.commit()
-
-            while len(nb_ids[0]) < len(table['id']):
-                self.cursor.execute("INSERT INTO ? ? VALUES ? ;",
-                                    (table, table.keys(), (table[column][len(nb_ids[0])] for column in table),))
-                self.connection.commit()
-
-                self.cursor.execute("SELECT id FROM ? ;", (table,))
-                nb_ids = list(self.cursor)
-                self.connection.commit()
-
-            for column in table:
-                for id_entry in range(0, len(column.values())):
-                    self.cursor.execute("UPDATE ? SET ? = ? WHERE id = ?;", (table, column, column[id_entry]),
-                                        id_entry, )
-                    self.connection.commit()
+    def enregistrer_bdd(self, table,champ,dictionnaire,chaine):
+        condition = ""
+        args = dictionnaire.keys()
+        for argument in len(args-1):
+            condition += f"{args[argument]} = {dictionnaire[args[argument]]}"
+            if argument < len(args)-1:
+                condition += " AND "
+            
+        self.cursor.execute("UPDATE ? set ? = ? WHERE ? ;", (table,champ,chaine,condition))
+        self.connection.commit()
 
     def updateProperty(self, idpartie, idcase, id_new_owner):  # Lorsqu'un joueur prend un pays
         query = "UPDATE id_joueur FROM etat_partie VALUES ? WHERE id_case = ? AND id_partie = ?;"
