@@ -129,7 +129,7 @@ def tour(id_partie):
 
 def donner_troupes(id_partie, joueur):
 	nb_territoires = 0
-	nb_territoires = recupere_bdd("etat_partie","id_cases",{"id_partie":id_partie,"id_joueur":id_joueur})
+	nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":id_partie,"id_joueur":id_joueur}))
 
 	nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
 	partie["nb_pions"] += nb_troupes_a_ajouter
