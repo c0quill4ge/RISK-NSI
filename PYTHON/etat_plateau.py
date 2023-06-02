@@ -36,6 +36,8 @@ def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb
 	raise CaseNonValide
     elif not graphe.verifier_voisins(id_case_dep, id_case_cib):
 	raise CasesNonConnectes
+    else:
+	return "tricheur"
 
 def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque côtés
     if pions_att >= 3:
