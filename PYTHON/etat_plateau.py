@@ -12,6 +12,17 @@ class CaseNonValide(Exception):
     "lorsque la case n'appartient pas au joueur dont cest le tour"
     pass
 
+# on crée le graphe
+graphelist = renvoie_table_aretes() # renvoie  [(p1, p2), (p2, p4), ... ]
+graphe = Graphe()
+for a,b in graphlist:
+	if a not in graphe:
+		graphe.ajouter_sommet(a)
+	if b not in graphe:
+		graphe.ajouter_sommet(b)
+	graphe.ajouter_arete(a,b)
+#graphe crée 
+
 db = Database
 def attaquer(database, graphe, idpartie, id_joueur, id_case_dep, id_case_cib, nb_troupe):  # Possible que si le nb de troupe est strictement supérieur à 1
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
