@@ -2,7 +2,7 @@ import datetime
 
 import mariadb
 
-from web_socket_server.database import database_ids
+from database_ids import *
 import sys
 sys.path.append("..")
 sys.path.append("..")
