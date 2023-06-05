@@ -1,6 +1,6 @@
-from class_graphe.py import *
+from class_graphe import *
 import random
-from web_socket_server.database.database.py import Database
+from web_socket_server.database.database import Database
 
 class NbPionsInsuffisant(Exception):
     "lorsque le nombreeeee de pions qu'on depalce ou avec lequel on attaque est trop grand"
