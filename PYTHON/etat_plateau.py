@@ -18,7 +18,7 @@ class CaseNonValide(Exception):
  
 class LogiqueDuJeu(Exception):
 	def __init__(self):
-		self.db = Database
+		self.db = Database()
 		
 	def attaquer(self,database, idpartie, id_attaquant, id_case_dep, id_case_cib,
 		     nb_troupe, nb_troupes_envoyées):  # Possible que si le nb de troupe est strictement supérieur à 1
@@ -74,9 +74,9 @@ class LogiqueDuJeu(Exception):
 
 
 
-	def deplacer_troupes(self,db, id_partie, case_depart, case_arrivée, nb_troupes):
+	def deplacer_troupes(self, id_partie, case_depart, case_arrivée, nb_troupes):
 
-	    Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
+	    Partie = self.db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 	    graphe = database.graphe
 	    def get_joueur(id_case0):
 		for id_case, id_joueur, nb_pions in Partie:
@@ -116,36 +116,36 @@ class LogiqueDuJeu(Exception):
 
 	    #update le nombre dans les deux cases, deplacement de nb_troupes de case_depart à case_arrivée
 
-	    db.updateArmy(id_partie, case_depart, get_nb_pions(case_depart)-nb_troupes)
-	    db.updateArmy(id_partie, case_arrivée, get_nb_pions(case_arrivée)+nb_troupes)
+	    self.db.updateArmy(id_partie, case_depart, get_nb_pions(case_depart)-nb_troupes)
+	    self.db.updateArmy(id_partie, case_arrivée, get_nb_pions(case_arrivée)+nb_troupes)
 
 	    return
 
 	def changer_tour(self,id_partie):
 		#une fois que le joueur a joué, on passe au joueur suivant
-		joueursuivant = recupere_bdd("joueurs_partie","tour",{"id_partie":("=",id_partie)})
+		joueursuivant = self.db.recupere_bdd("joueurs_partie","tour",{"id_partie":("=",id_partie)})
 		#mettre a la place de joueur
-		joueurs = recupere_bdd("joueurs_partie","id_joueur",{"id_partie":("=",id_partie)}) #order by id_joueur limit 1
+		joueurs = self.db.recupere_bdd("joueurs_partie","id_joueur",{"id_partie":("=",id_partie)}) #order by id_joueur limit 1
 		for joueur in range(len(joueurs)-1):
 			if joueurs[joueur] == joueursuivant:
 				if joueur == len(joueurs)-1:
 					joueurdapres = joueurs[0]
 				else:
 					joueurdapres = joueurs[joueur+1]
-		enregistrer_bdd("joueurs_parties","joueur_suivant",joueurdapres,{"id_partie":id_partie})
-		enregistrer_bdd("parties","tour",joueursuivant,{"id_partie",id_partie})
+		self.db.enregistrer_bdd("joueurs_parties","joueur_suivant",joueurdapres,{"id_partie":id_partie})
+		self.db.enregistrer_bdd("parties","tour",joueursuivant,{"id_partie",id_partie})
 
 
 	def tour(self,id_partie):
 		#renvoie le numéro du joueur qui doit jouer
-		return recupere_bdd("partie","tour",{"id_partie":("=",id_partie)})
+		return self.db.recupere_bdd("partie","tour",{"id_partie":("=",id_partie)})
 
 
 	def donner_troupes(self,id_partie, joueur):
 
 		# si bonus de continent -> donner plus de troupes
 		nb_territoires = 0
-		nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":("=",id_partie),"id_joueur":("=",id_joueur)}))
+		nb_territoires = len(self.db.recupere_bdd("etat_partie","id_cases",{"id_partie":("=",id_partie),"id_joueur":("=",id_joueur)}))
 
 		nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
 		partie["nb_pions"] += nb_troupes_a_ajouter
@@ -156,15 +156,15 @@ class LogiqueDuJeu(Exception):
 	    # donne n troupes à tous les joueurs
 	    # donne les territoires aléatoirement à tous les joueurs
 	    # fonction placement_troupes
-	    territoires = list(recuperer_bdd(cases, id_cases, {'id_partie' : ("=",id_partie)}))
+	    territoires = list(self.db.recuperer_bdd(cases, id_cases, {'id_partie' : ("=",id_partie)}))
 	    shuffle(territoires)
 	    n = len(territoires) / 6
 	    terres = [territoires[i:i + n] for i in range(0, len(territoires), n)]
-	    L = list(recuperer_bdd("joueurs", "id_joueur", {'id_partie': ("=",id_partie)}))
+	    L = list(self.db.recuperer_bdd("joueurs", "id_joueur", {'id_partie': ("=",id_partie)}))
 	    i = 0
 	    for id_player in L:
 		donner_troupes(id_partie, id_player)
-		insert_bdd("etat_partie",{"id_partie":id_partie,"id_cases":terres[i],"id_joueur":id_player,"nb_pion":1})
+		self.db.insert_bdd("etat_partie",{"id_partie":id_partie,"id_cases":terres[i],"id_joueur":id_player,"nb_pion":1})
 		i += 1
 
 	    assert i == 6, "probleme boucle debut partie"
@@ -172,12 +172,12 @@ class LogiqueDuJeu(Exception):
 
 	def placement_troupes(self,database, id_partie, id_case, nb_troupes = 1):
 		#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
-	    state = recupere_bdd("parties","etat",{"id_partie":("=",id_partie)})
+	    state = self.db.recupere_bdd("parties","etat",{"id_partie":("=",id_partie)})
 	    if state == "debut":
 		#on donne une troupe à id_case d'id_partie
-		database.updateArmy(idpartie, id_case, 1)
+		self.db.updateArmy(idpartie, id_case, 1)
 	    else:
-		database.updateArmy(idpartie, id_case, nb_troupes)
+		self.db.updateArmy(idpartie, id_case, nb_troupes)
 
 		#sinon place nb_troupes troupes sur la case voulue
 	    return
@@ -187,7 +187,7 @@ class LogiqueDuJeu(Exception):
 
 	def return_plateau(self,id_partie):
 		dico = dict()
-		cases = recupere_bdd("etat_partie","id_cases,id_joueur,nb_pions",{"id_partie":("=", id_partie)})
+		cases = self.db.recupere_bdd("etat_partie","id_cases,id_joueur,nb_pions",{"id_partie":("=", id_partie)})
 		for case in cases :
 			if not case[0] in dico:
 				dico[case[0]] = (case[1],case[2])
