@@ -1,9 +1,13 @@
 import datetime
-from graphe_classe import *
+
 import mariadb
 
 from web_socket_server.database import database_ids
+import sys
+sys.path.append("..")
+sys.path.append("..")
 
+from PYTHON.class_graphe import *
 
 class Database:
     def __init__(self):
