@@ -130,9 +130,9 @@ def deplacer_troupes(db, graphe, id_partie, case_depart, case_arrivée, nb_troup
 
 def changer_tour(id_partie):
 	#une fois que le joueur a joué, on passe au joueur suivant
-	joueursuivant = recupere_bdd("joueurs_partie","tour",{"id_partie":id_partie})
+	joueursuivant = recupere_bdd("joueurs_partie","tour",{"id_partie":("=",id_partie)})
 	#mettre a la place de joueur
-	joueurs = recupere_bdd("joueurs_partie","id_joueur",{"id_partie":id_partie}) #order by id_joueur limit 1
+	joueurs = recupere_bdd("joueurs_partie","id_joueur",{"id_partie":("=",id_partie)}) #order by id_joueur limit 1
 	for joueur in range(len(joueurs)-1):
 		if joueurs[joueur] == joueursuivant:
 			if joueur == len(joueurs)-1:
@@ -145,14 +145,14 @@ def changer_tour(id_partie):
 
 def tour(id_partie):
 	#renvoie le numéro du joueur qui doit jouer
-	return recupere_bdd("partie","tour",{"id_partie":id_partie})
+	return recupere_bdd("partie","tour",{"id_partie":("=",id_partie)})
     
 
 def donner_troupes(id_partie, joueur):
 	
 	# si bonus de continent -> donner plus de troupes
 	nb_territoires = 0
-	nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":id_partie,"id_joueur":id_joueur}))
+	nb_territoires = len(recupere_bdd("etat_partie","id_cases",{"id_partie":("=",id_partie),"id_joueur":("=",id_joueur)}))
 
 	nb_troupes_a_ajouter = nb_territoires // 3  # on donne autant d'armées que le joueur a de territoires divisé par 3 (sans le reste lol)
 	partie["nb_pions"] += nb_troupes_a_ajouter
@@ -163,11 +163,11 @@ def debut_partie(id_partie):
     # donne n troupes à tous les joueurs
     # donne les territoires aléatoirement à tous les joueurs
     # fonction placement_troupes
-    territoires = list(recuperer_bdd(cases, id_cases, {'id_partie' : id_partie}))
+    territoires = list(recuperer_bdd(cases, id_cases, {'id_partie' : ("=",id_partie)}))
     shuffle(territoires)
     n = len(territoires) / 6
     terres = [territoires[i:i + n] for i in range(0, len(territoires), n)]
-    L = list(recuperer_bdd("joueurs", "id_joueur", {'id_partie': id_partie}))
+    L = list(recuperer_bdd("joueurs", "id_joueur", {'id_partie': ("=",id_partie)}))
     i = 0
     for id_player in L:
         donner_troupes(id_partie, id_player)
@@ -179,7 +179,7 @@ def debut_partie(id_partie):
 
 def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 	#vérifie si c’est en début de partie → le joueur ne peut poser qu’une troupe
-    state = recupere_bdd("parties","etat",{"id_partie":id_partie})
+    state = recupere_bdd("parties","etat",{"id_partie":("=",id_partie)})
     if state == "debut":
         #on donne une troupe à id_case d'id_partie
         database.updateArmy(idpartie, id_case, 1)
