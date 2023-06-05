@@ -76,107 +76,150 @@ paths.forEach((path) => {
 
 
 
+function init(num_joueur){ //num_joueur : str (j1,j2,j3,j4,j5,j6)
+    $nom_joueur = num_joueur;
+    for (let id_pays in pays){
+        let nom_pays = pays[id_pays];
+        let pays_selectionne = document.getElementById(nom_pays);
+        if(pays_selectionne !== null){
+            pays_selectionne.style.removeProperty('fill');
+            pays_selectionne.style.removeProperty('fill-opacity');
+            pays_selectionne.style.removeProperty('stroke');
+            pays_selectionne.classList.add('empty');
+            pays_selectionne.onclick = select_territoire_loop(nom_pays);
+            half[nom_pays] = coord_centre(nom_pays); // remplis le dictionnaire half avec les coordonnées des centres des pays
+        }else{
+            alert(nom_pays);
+        }
+    }
+}
 
-function get_continent(nom_pays) {
-    for (let c in continents) {
-        if (continents[c].includes(nom_pays)) {
+function get_continent(nom_pays){
+    for(let c in continents){
+        if(continents[c].includes(nom_pays)){
             return c;
         }
     }
 }
 
 
-function change_classe(nom_territoire, classe) {
-    const territoire = document.getElementById(nom_territoire);
-    if (territoire !== null) {
-        territoire.classList.remove('empty', 'j1', 'j2', 'j3', 'j4', 'j5', 'j6');
+function change_classe(nom_territoire,classe){
+    territoire = document.getElementById(nom_territoire);
+    if(territoire !== null){
+        territoire.classList.remove('empty','j1','j2','j3','j4','j5','j6');
         territoire.classList.add(classe);
     }
 }
 
-function select_territoire(nom_territoire) {
-    const L = document.getElementsByClassName('selected');
-    while (L.length > 0) {
+function select_territoire(nom_territoire){
+    L = document.getElementsByClassName('selected');
+    while(L.length>0){
         L[0].classList.remove('selected');
     }
-    const territoire = document.getElementById(nom_territoire);
-    if (territoire !== null) {
+    territoire = document.getElementById(nom_territoire);
+    if(territoire !== null){
         territoire.classList.add('selected');
     }
     document.getElementById('label_pays_selectionne').innerHTML = 'Pays sélectionné: '.concat(L[0].id);
     document.getElementById('label_continent').innerHTML = 'Continent: '.concat(get_continent(L[0].id));
 }
 
-
-function init(num_joueur) { //num_joueur : str (j1,j2,j3,j4,j5,j6)
-    let $nom_joueur = num_joueur;
-    for (let id_pays in pays) {
-        let nom_pays = pays[id_pays];
-        let pays_selectionne = document.getElementById(nom_pays);
-        if (pays_selectionne !== null) {
-            pays_selectionne.style.removeProperty('fill');
-            pays_selectionne.style.removeProperty('fill-opacity');
-            pays_selectionne.style.removeProperty('stroke');
-            pays_selectionne.classList.add('empty');
-            pays_selectionne.onclick = select_territoire_loop(nom_pays);
-        } else {
-            alert(nom_pays);
-        }
-    }
-}
-
-function conquerir() {
+function conquerir(){
     let pays_selectionne = document.getElementsByClassName('selected');
-    if (pays_selectionne.length > 0) {
-        change_classe(pays_selectionne[0].id, $nom_joueur);
+    if (pays_selectionne.length > 0){
+        change_classe(pays_selectionne[0].id,$nom_joueur);
     }
 }
 
-function change_classe_loop(nom_pays, nom_classe) { // permet d'attribuer à chaque territoire la fonction change_classe appropriée (dans la boucle)
-    return function () {
-        change_classe(nom_pays, nom_classe)
-    };
+function change_classe_loop(nom_pays,nom_classe){ // permet d'attribuer à chaque territoire la fonction change_classe appropriée (dans la boucle)
+    return function () {change_classe(nom_pays,nom_classe)};
 }
 
-function select_territoire_loop(nom_pays) { // permet d'attribuer à chaque territoire la fonction select_territoire appropriée (dans la boucle)
-    return function () {
-        select_territoire(nom_pays)
-    };
+function select_territoire_loop(nom_pays){ // permet d'attribuer à chaque territoire la fonction select_territoire appropriée (dans la boucle)
+    return function () {select_territoire(nom_pays)};
 }
 
-function mode_continent() { //met l'affichage de la carte en mode continent (on ne voit pas les territoires des joueurs)
-    for (let id_pays in pays) {
+function mode_continent(){ //met l'affichage de la carte en mode continent (on ne voit pas les territoires des joueurs)
+    for (let id_pays in pays){
         let pays_selectionne = document.getElementById(pays[id_pays]);
         pays_selectionne.classList.add('continent');
     }
     const bouton_mode_carte = document.getElementById('bouton_mode_carte');
     bouton_mode_carte.innerHTML = 'Mode Joueurs';
-    bouton_mode_carte.onclick = function () {
-        mode_joueurs()
-    };
+    bouton_mode_carte.onclick = function () {mode_joueurs()};
 }
 
-function mode_joueurs() { //met l'affichage de la carte en mode joueur (on voit les territoires des joueurs)
-    for (let id_pays in pays) {
+function mode_joueurs(){ //met l'affichage de la carte en mode joueur (on voit les territoires des joueurs)
+    for (let id_pays in pays){
         let pays_selectionne = document.getElementById(pays[id_pays]);
         pays_selectionne.classList.remove('continent');
     }
     const bouton_mode_carte = document.getElementById('bouton_mode_carte');
     bouton_mode_carte.innerHTML = 'Mode Continent';
-    bouton_mode_carte.onclick = function () {
-        mode_continent()
-    };
+    bouton_mode_carte.onclick = function () {mode_continent()};
 }
 
-function create_troop_circle(){
-    for (let id_pays in pays){
-        let nom_pays = pays[id_pays];
-        cercle = document.createElementNS("http://www.w3.org/2000/svg","circle") ;
-        cercle.setAttribute("cx",half[nom_pays].x);
-        cercle.setAttribute("cy",half[nom_pays].y);
-        cercle.setAttribute("r",10);
-        document.getElementById("layer4").appendChild(cercle);
+function update_troop_number(nom_pays,nb_troupes){
+    let texte_cercle_selectionne = document.getElementById('texte_cercle_'+nom_pays);
+    texte_cercle_selectionne.innerHTML = nb_troupes;
+}
 
+function create_troop_circle() {
+    for (let id_pays in pays) {
+        let nom_pays = pays[id_pays];
+        groupe = document.createElementNS("http://www.w3.org/2000/svg","g");
+        groupe.setAttribute('id', 'cercle_' + nom_pays);
+        cercle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        texte = document.createElementNS("http://www.w3.org/2000/svg","text");
+        cercle.setAttribute("cx", half[nom_pays].x);
+        cercle.setAttribute("cy", half[nom_pays].y);
+        texte.innerHTML = '0';
+
+        texte.setAttribute('x', half[nom_pays].x-5);
+        texte.setAttribute('y', half[nom_pays].y+5);
+        texte.setAttribute('font-size', 15);
+        texte.setAttribute('fill', 'white');
+        texte.setAttribute('id', 'texte_cercle_' + nom_pays);
+
+        groupe.appendChild(cercle);
+
+        groupe.appendChild(texte);
+
+        document.getElementById("layer4").appendChild(groupe);
+        cercle.setAttribute("r", texte.getBBox().width*1.5);
     }
 }
 
+
+function change_nb_troupes(nom_pays,nb_troupes){
+    let texte = document.getElementById('texte_cercle_'+nom_pays);
+    texte.innerHTML = nb_troupes;
+}
+
+function coord_centre(nom_territoire){ // renvoie les coordonnées du centre d'un objet svg
+    let territoire = document.getElementById(nom_territoire);
+    let bbox = territoire.getBBox(); // dictionnaire {x:float y:float width:float height:float}
+    return {x:bbox.x+bbox.width/2,y:bbox.y+bbox.height/2};
+}
+
+function cacher_cercles(){
+    for (let i in pays){
+        let nom_pays = pays[i];
+        let groupe = document.getElementById('groupe_cercle_'+nom_pays);
+        document.getElementById('groupe_cercle_'+nom_pays).classList.add('continent');
+        //let bouton_cercles = document.getElementById('bouton_mode_cercles');
+        //bouton_cercles.innerHTML = 'Montrer les cercles';
+        //bouton_cercles.onclick = function () {montrer_cercles()};
+    }
+}
+
+function montrer_cercles(){
+    for (let i in pays){
+        let nom_pays = pays[i];
+        let groupe = document.getElementById('groupe_cercle_'+nom_pays);
+        document.getElementById('groupe_cercle_'+nom_pays).classList.remove('continent');
+        //let bouton_cercles = document.getElementById('bouton_mode_cercles');
+        //bouton_cercles.innerHTML = 'Cacher les cercles';
+        //bouton_cercles.onclick = function () {cacher_cercles()};
+    }
+}

@@ -40,7 +40,13 @@ $database = new Database();
 </head>
 <body>
 <main id="main_game">
-    <img src="../content/svg/Risk_board.svg" alt="board svg" id="main_game__board">
+<!--    <img src="../content/svg/Risk_board.svg" alt="board svg" id="main_game__board">-->
+    <?php
+    $file = file('../content/svg/Risk_board.svg'); //importe la table de risk à partir de la 3ème ligne
+    for($i=2;$i<sizeof($file);$i++){
+        echo $file[$i];
+    }
+    ?>
 </main>
 
 
