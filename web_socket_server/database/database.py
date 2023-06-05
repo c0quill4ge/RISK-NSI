@@ -1,5 +1,5 @@
 import datetime
-
+from graphe_classe import *
 import mariadb
 
 from web_socket_server.database import database_ids
@@ -15,6 +15,17 @@ class Database:
             database=database_ids.database
         )
         self.cursor = self.connection.cursor()
+        
+        self.graphe = Graphe()
+        query = "SELECT id_case1, id_case2 FROM aretes"
+        self.cursor.execute(query)
+        graphlist = self.cursor.fetchall()# renvoie  [(p1, p2), (p2, p4), ... ]
+        for a,b in graphlist:
+            if a not in self.graphe:
+                self.graphe.ajouter_sommet(a)
+            if b not in graphe:
+                self.graphe.ajouter_sommet(b)
+            self.graphe.ajouter_arete(a,b)
 
     def find_token(self, token: str):
         query = "SELECT id_joueur, token, time FROM tokens WHERE token = ?;"
