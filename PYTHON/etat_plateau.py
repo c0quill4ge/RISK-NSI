@@ -18,8 +18,9 @@ class CaseNonValide(Exception):
  
 
 db = Database
-def attaquer(database, graphe, idpartie, id_attaquant, id_case_dep, id_case_cib,
+def attaquer(database, idpartie, id_attaquant, id_case_dep, id_case_cib,
              nb_troupe, nb_troupes_envoyées):  # Possible que si le nb de troupe est strictement supérieur à 1
+    graphe = database.graphe
     nb_pions_case_dep, id_joueur = database.getCase(idpartie, id_case_dep)
     nb_pions_case_cib, id_joueur_ennemie = database.getCase(idpartie, id_case_cib)
     # On s'assure que le nb de troupes n'est pas abusé, que l'on attaque un autre joueur et que le chemin entre les 2 cases existent
@@ -71,10 +72,10 @@ def bataille_des(pions_att, pions_def):  # Renvoie le tuple des pertes de chaque
 
 
 
-def deplacer_troupes(db, graphe, id_partie, case_depart, case_arrivée, nb_troupes):
-
+def deplacer_troupes(db, id_partie, case_depart, case_arrivée, nb_troupes):
+ 
     Partie = db.getPartie(id_partie) # liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
-
+    graphe = database.graphe
     def get_joueur(id_case0):
         for id_case, id_joueur, nb_pions in Partie:
             if id_case == id_case0:
