@@ -182,3 +182,12 @@ def placement_troupes(database, id_partie, id_case, nb_troupes = 1):
 
 def change_couleur(id_partie, id_case, id_nouveau_joueur):
     return {'order':change_couleur,'id_case':id_case, 'id_joueur':id_nouveau_joueur}
+
+def return_plateau(id_partie):
+	dico = dict()
+	cases = recupere_bdd("etat_partie","id_cases,id_joueur,nb_pions",{"id_partie":("=", id_partie)})
+	for case in cases :
+		if not case[0] in dico:
+			dico[case[0]] = (case[1],case[2])
+			
+	return dico
