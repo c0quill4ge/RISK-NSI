@@ -122,7 +122,7 @@ class Database:
         self.connection.commit()
                         
     def insert_bdd(self,table,dictionnaire):
-        self.cursor.execute("INSERT INTO ? ? VALUES ? ;", (table,tuple(dictionnaire.keys()),valeurs = tuple(dictionnaire.values()))
+        self.cursor.execute("INSERT INTO ? ? VALUES ? ;", (table,tuple(dictionnaire.keys()),tuple(dictionnaire.values()))
         self.connection.commit()
                         
     def updateProperty(self, idpartie, idcase, id_new_owner):  # Lorsqu'un joueur prend un pays
