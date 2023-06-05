@@ -110,7 +110,7 @@ class Database:
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    def enregistrer_bdd(self, table,champ,chaine,dictionnaire=dict():
+    def enregistrer_bdd(self, table,champ,chaine,dictionnaire=dict()):
         condition = ""
         args = dictionnaire.keys()
         for argument in len(args-1):
