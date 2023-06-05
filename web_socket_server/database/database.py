@@ -2,12 +2,7 @@ import datetime
 
 import mariadb
 
-from database_ids import *
-import sys
-sys.path.append("..")
-sys.path.append("..")
-
-from PYTHON.class_graphe import *
+from class_graphe import *
 
 class Database:
     def __init__(self):
