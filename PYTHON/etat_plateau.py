@@ -199,7 +199,11 @@ class LogiqueDuJeu:
 			id_partie = db.getLastGame()
 			debut_partie(id_partie)
 		else:
-			# for
-			pass
+			for keys in D.keys():
+				if key in self.__web_server.get_functions.keys():
+					self.__web_server.execute_function(*D[key])
+					
+			
 		
 		return return_plateau(id_partie)
+
