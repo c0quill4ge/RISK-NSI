@@ -16,7 +16,7 @@ class CaseNonValide(Exception):
 # voir dans attaquer et donner troupes dans plateau.py pour le bonus de continent
 ###########
  
-class LogiqueDuJeu(Exception):
+class LogiqueDuJeu:
 	def __init__(self):
 		self.db = Database()
 		self.id_partie = db.getLastGame()
