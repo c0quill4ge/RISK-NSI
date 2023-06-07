@@ -206,4 +206,18 @@ class LogiqueDuJeu:
 			
 		
 		return return_plateau(id_partie)
+	
+	def check_bonus_continent(id_partie): # renvoie une liste de tuple des joueurs avec le continent qu'ils possèdent
+	      joueurs_bonus = []
+	      id_plateau = recupere_bdd("parties","id_plateau",{"id_partie":("=",id_partie)})
+	      continents = recupere_bdd("continents","id_continent",{"id_plateau":("=",id_plateau)})
+	      for continent in continents:
+		    cases_continent = recupere_bdd("cases","id_case",{"id_plateau":("=",id_plateau),"id_continent" : ("=",continent)})
+		    joueur1 = recupere_bdd("etat_partie","id_joueur",{"id_case":("=",cases_continent[0])})
+		    for i in range(1,len(cases_continent)-1):
+			  joueur = recupere_bdd("etat_partie","id_joueur",{"id_case":("=",cases_continent[i])})
+			  if joueur != joueur1:
+				continue
+		    joueurs_bonus.append((continent,joueur1))
+	      	return joueurs_bonus
 
