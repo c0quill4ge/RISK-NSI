@@ -163,7 +163,7 @@ class LogiqueDuJeu:
 		L = list(self.db.recuperer_bdd("joueurs", "id_joueur", {'id_partie': ("=",id_partie)}))
 		i = 0
 		for id_player in L:
-			donner_troupes(id_partie, id_player)
+			db.donner_troupes(id_player)
 			self.db.insert_bdd("etat_partie",{"id_partie":id_partie,"id_cases":terres[i],"id_joueur":id_player,"nb_pion":1})
 			i += 1
 		assert i == 6, "probleme boucle debut partie"
