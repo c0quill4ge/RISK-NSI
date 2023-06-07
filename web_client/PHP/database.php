@@ -73,7 +73,7 @@ class Database
         return $bdd;
     }
 
-    public function registerToken($token, $id): bool
+    public function registerToken($token, $id)
     {
         $query = "INSERT INTO tokens (id_joueur, token, time) VALUES (:id, :token, UNIX_TIMESTAMP());";
         $stmt = $this->sql_connect()->prepare($query);
@@ -88,7 +88,7 @@ class Database
         }
     }
 
-    public function getGames(): array
+    public function getGames()
     {
         $query = "SELECT parties.id_partie, plateaux.nom_plateau, COUNT(joueurs_parties.id_partie) AS nb_joueurs FROM plateaux JOIN parties ON parties.id_plateau = plateaux.id_plateau JOIN joueurs_parties ON parties.id_partie = joueurs_parties.id_partie WHERE parties.etat = 1 GROUP BY parties.id_partie, plateaux.nom_plateau ORDER BY nb_joueurs DESC LIMIT 0, 5;";
         $stmt = $this->sql_connect()->prepare($query);
@@ -96,7 +96,7 @@ class Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createUser(string $username, string $password): bool|string
+    public function createUser(string $username, string $password)
     {
 
         $hashed_password = hash('sha256', $password);
@@ -113,7 +113,7 @@ class Database
         }
     }
 
-    public function login(string $username, string $password): bool|int
+    public function login(string $username, string $password)
     {
         $hashed_password = hash('sha256', $password);
         $query = "SELECT id_joueur FROM joueurs WHERE pseudo = :login_name AND mdp = :password;";
