@@ -9,7 +9,7 @@ if (!isset($_SESSION["user"])) {
 } else {
     $playerId = $_SESSION["user"];
 }
-function random_str_generator($len_of_gen_str): string
+function random_str_generator($len_of_gen_str)
 {
     $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#@*%$";
     $var_size = strlen($chars);
