@@ -123,3 +123,7 @@ class Database:
     def updateProperty(self, idpartie, idcase, id_new_owner):  # Lorsqu'un joueur prend un pays
         query = "UPDATE id_joueur FROM etat_partie VALUES ? WHERE id_case = ? AND id_partie = ?;"
         self.cursor.execute(query, (id_new_owner, idcase, idpartie))
+    def nb_pions_bonus(self, id_partie, id_joueur):  # renvoie le nb de pions bonus pour une partie et un joueur donné
+        query = "SELECT SUM(continents.nb_pions) FROM continents INNER JOIN cases ON cases.id_continent = continents.id_continent INNER JOIN etat_partie ON etat_partie.id_cases = cases.id_case  WHERE etat_partie.id_partie = ? GROUP BY continents.id_continent HAVING count(distinct(id_joueur)) = 1 AND MAX(id_joueur) = ?;"
+        self.cursor.execute(query, (id_partie,id_joueur))
+        return self.cursor.fetchall()[0][0] # ou un seul [0], je sais pas si c'est [(nb_pions)], ou [nb_pions]
