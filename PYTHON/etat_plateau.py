@@ -217,7 +217,7 @@ class LogiqueDuJeu:
 		    for i in range(1,len(cases_continent)-1):
 			  joueur = recupere_bdd("etat_partie","id_joueur",{"id_case":("=",cases_continent[i])})
 			  if joueur != joueur1:
-				continue
+				break
 		    joueurs_bonus.append((continent,joueur1))
-	      	return joueurs_bonus
+	      return joueurs_bonus
 
