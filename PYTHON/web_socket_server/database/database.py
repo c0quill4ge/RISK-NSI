@@ -2,7 +2,7 @@ import datetime
 
 import mariadb
 
-from class_graphe import *
+from classe_graphe import *
 
 class Database:
     def __init__(self):
