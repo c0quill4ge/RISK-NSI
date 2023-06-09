@@ -46,9 +46,9 @@ class Database:
         self.cursor.execute(query, (nbtroupe, idpartie, idcase))
 
     def getPartie(self, idpartie):  # renvoie toutes les infos concernant les cases de la partie
-        query = "SELECT (*) FROM etat_partie WHERE id_partie = ? ;"
+        query = "SELECT id_case, id_joueur, nb_pions FROM etat_partie WHERE id_partie = ? ;"
         self.cursor.execute(query, (idpartie,))
-        return self.cursor.fetchall()  # Renvoie liste de tuples [(id_partie, id_case, id_joueur, nb_pions)], avec un tuple par case
+        return self.cursor.fetchall()  # Renvoie liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 
     def getCase(self, idpartie, idcase): # returns (nb_pawns, id_player)
         query = "SELECT nb_pions, id_joueurs FROM etat_partie WHERE id_partie = ? AND id_case = ?"
