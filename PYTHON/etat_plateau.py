@@ -185,7 +185,7 @@ class LogiqueDuJeu:
 	
 	def return_plateau(self):
 		dico = dict()
-		cases = self.db.recupere_bdd("etat_partie","id_cases,id_joueur,nb_pions",{"id_partie":("=", self.id_partie)})
+		cases = self.db.getPartie(idpartie) # # Renvoie liste de tuples [(id_case, id_joueur, nb_pions)], avec un tuple par case
 		for case in cases :
 			if not case[0] in dico:
 				dico[case[0]] = (case[1],case[2])
