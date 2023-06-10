@@ -17,6 +17,7 @@ class WebServer:
         self.__clients = dict()
         self.__clients_list = list()
 
+
     async def main(self):
         async with serve(self.gestion, host=self.__host, port=self.__port):
             await asyncio.Future()  # boucle infinie qui ne gène pas l'exécution du reste du programme

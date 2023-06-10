@@ -127,3 +127,6 @@ class Database:
         query = "SELECT SUM(continents.nb_pions) FROM continents INNER JOIN cases ON cases.id_continent = continents.id_continent INNER JOIN etat_partie ON etat_partie.id_cases = cases.id_case  WHERE etat_partie.id_partie = ? GROUP BY continents.id_continent HAVING count(distinct(id_joueur)) = 1 AND MAX(id_joueur) = ?;"
         self.cursor.execute(query, (id_partie,id_joueur))
         return self.cursor.fetchall()[0][0] # c'etait de la forme [(nb_pions)], et on renvoie nb_pions
+
+    def getLastGame(self):
+        pass
