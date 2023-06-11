@@ -98,7 +98,7 @@ DROP TABLE IF EXISTS `joueurs`;
 CREATE TABLE IF NOT EXISTS `joueurs` (
   `id_joueur` int(11) NOT NULL AUTO_INCREMENT,
   `pseudo` varchar(13) NOT NULL,
-  `mdp` varchar(20) NOT NULL,
+  `mdp` TEXT NOT NULL,
   PRIMARY KEY (`id_joueur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -157,9 +157,9 @@ CREATE TABLE IF NOT EXISTS `plateaux` (
 
 DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE IF NOT EXISTS `tokens` (
-  `id_joueur` int(11) NOT NULL,
-  `token` int(11) NOT NULL,
-  `time` int(11) NOT NULL,
+  `id_joueur` int NOT NULL,
+  `token` TEXT NOT NULL,
+  `time` int NOT NULL,
   KEY `token_ibfk_1` (`id_joueur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
